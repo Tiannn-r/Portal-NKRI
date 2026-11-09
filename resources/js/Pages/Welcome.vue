@@ -366,8 +366,8 @@ onUnmounted(() => {
             <div class="relative max-w-4xl mx-auto text-center space-y-6">
                 
                 <!-- Badge Info Nyata Sistem (Real Data Counter) -->
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-soft border border-primary-ring/60 shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary-soft border border-primary-ring/60 shadow-xs">
+                    <img src="/images/logo-emblem.png" alt="Logo NKRI" class="w-4 h-4 object-contain" />
                     <span v-if="auth.user" class="text-xs font-bold text-primary tracking-wide">
                         {{ stats.accessible_count }} dari {{ stats.total_count }} sistem digital dapat Anda akses
                     </span>
