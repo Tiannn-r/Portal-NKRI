@@ -305,7 +305,7 @@ onUnmounted(() => {
                 </button>
 
                 <!-- Menu Anchor Navigasi di Tengah (Animasi Geser Halus / Sliding Pill Indicator) -->
-                <nav ref="navRef" class="relative flex items-center gap-2 sm:gap-3">
+                <nav ref="navRef" class="relative flex items-center gap-1.5 sm:gap-3">
                     <!-- Kapsul Latar Belakang yang Meluncur Mulus (Sliding Pill) -->
                     <div
                         class="absolute rounded-full bg-primary-soft border border-primary-ring/40 shadow-xs pointer-events-none"
@@ -318,7 +318,7 @@ onUnmounted(() => {
                         :ref="(el) => setTabRef('hero', el)"
                         type="button"
                         @click="handleNavClick('hero')"
-                        class="relative z-10 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
+                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
                         :class="activeSection === 'hero' 
                             ? 'text-primary font-bold' 
                             : 'text-content-muted hover:text-content'"
@@ -332,7 +332,7 @@ onUnmounted(() => {
                         :ref="(el) => setTabRef('announcements', el)"
                         type="button"
                         @click="handleNavClick('announcements')"
-                        class="relative z-10 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none flex items-center gap-2"
+                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none flex items-center gap-1.5 sm:gap-2"
                         :class="activeSection === 'announcements' 
                             ? 'text-primary font-bold' 
                             : 'text-content-muted hover:text-content'"
@@ -346,7 +346,7 @@ onUnmounted(() => {
                         :ref="(el) => setTabRef('systems', el)"
                         type="button"
                         @click="handleNavClick('systems')"
-                        class="relative z-10 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
+                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
                         :class="activeSection === 'systems' 
                             ? 'text-primary font-bold' 
                             : 'text-content-muted hover:text-content'"
