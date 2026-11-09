@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->authGuard('admin')
             ->brandName('Portal NKRI - PT Nanggala Kencana Rekatama Indonesia')
             ->brandLogo(fn () => asset('images/logo-full.png'))
             ->brandLogoHeight('2.4rem')

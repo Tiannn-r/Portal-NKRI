@@ -213,38 +213,38 @@ onUnmounted(() => {
     <div class="min-h-screen bg-[#FBFBFB] text-content font-sans antialiased flex flex-col selection:bg-primary-soft selection:text-primary">
         
         <!-- =================================================================================== -->
-        <!-- HEADER STICKY (Logo, Anchor Menu, Akun / Login, Offset Halus)                       -->
+        <!-- HEADER STICKY (Logo, Anchor Menu, Akun / Login, Padding Lega & Elegan)              -->
         <!-- =================================================================================== -->
         <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-border shadow-xs transition-all duration-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-4 sm:py-5 flex items-center justify-between">
                 
                 <!-- Logo & Brand di Sisi Kiri -->
                 <button 
                     @click="scrollToSection('hero')" 
                     type="button" 
-                    class="flex items-center space-x-3 text-left group focus:outline-none focus:ring-2 focus:ring-primary-ring rounded-xl p-1"
+                    class="flex items-center space-x-3.5 text-left group focus:outline-none focus:ring-2 focus:ring-primary-ring rounded-2xl p-1.5 transition-all"
                 >
                     <img 
                         src="/images/logo-emblem.png" 
                         alt="Logo NKRI" 
-                        class="w-10 h-10 object-contain group-hover:scale-105 transition-transform" 
+                        class="w-11 h-11 object-contain group-hover:scale-105 transition-transform duration-200" 
                     />
                     <div class="hidden sm:block">
-                        <span class="block text-base font-extrabold tracking-tight text-content leading-tight group-hover:text-primary transition-colors">
+                        <span class="block text-lg font-black tracking-tight text-content leading-tight group-hover:text-primary transition-colors">
                             PORTAL NKRI
                         </span>
-                        <span class="block text-[10.5px] font-semibold text-content-subtle tracking-wider uppercase">
+                        <span class="block text-[11px] font-semibold text-content-subtle tracking-wider uppercase mt-0.5">
                             PT Nanggala Kencana Rekatama Indonesia
                         </span>
                     </div>
                 </button>
 
                 <!-- Menu Anchor Navigasi di Tengah -->
-                <nav class="flex items-center space-x-1 sm:space-x-2">
+                <nav class="flex items-center space-x-2 sm:space-x-3">
                     <button
                         type="button"
                         @click="scrollToSection('hero')"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150"
+                        class="px-4.5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150"
                         :class="activeSection === 'hero' 
                             ? 'bg-primary-soft text-primary font-bold shadow-xs' 
                             : 'text-content-muted hover:text-content hover:bg-gray-100'"
@@ -257,7 +257,7 @@ onUnmounted(() => {
                         v-if="announcements && announcements.length > 0"
                         type="button"
                         @click="scrollToSection('announcements')"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 flex items-center gap-1.5"
+                        class="px-4.5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 flex items-center gap-1.5"
                         :class="activeSection === 'announcements' 
                             ? 'bg-primary-soft text-primary font-bold shadow-xs' 
                             : 'text-content-muted hover:text-content hover:bg-gray-100'"
@@ -269,7 +269,7 @@ onUnmounted(() => {
                     <button
                         type="button"
                         @click="scrollToSection('systems')"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150"
+                        class="px-4.5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150"
                         :class="activeSection === 'systems' 
                             ? 'bg-primary-soft text-primary font-bold shadow-xs' 
                             : 'text-content-muted hover:text-content hover:bg-gray-100'"
@@ -285,16 +285,16 @@ onUnmounted(() => {
                         <button
                             type="button"
                             @click="isAccountDropdownOpen = !isAccountDropdownOpen"
-                            class="flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-border bg-surface hover:bg-gray-100 hover:border-primary-ring transition-all text-left focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                            class="flex items-center gap-3 px-4 py-2 rounded-full border border-border bg-surface hover:bg-gray-100 hover:border-primary-ring transition-all text-left focus:outline-none focus:ring-2 focus:ring-primary-ring shadow-xs"
                         >
-                            <div class="w-7 h-7 rounded-full bg-primary-soft text-primary flex items-center justify-center font-bold text-xs">
+                            <div class="w-8 h-8 rounded-full bg-primary-soft text-primary flex items-center justify-center font-bold text-xs sm:text-sm">
                                 {{ auth.user.name.charAt(0) }}
                             </div>
-                            <div class="hidden md:block max-w-[140px] truncate">
-                                <span class="block text-xs font-bold text-content leading-tight truncate">
+                            <div class="hidden md:block max-w-[160px] truncate">
+                                <span class="block text-xs sm:text-sm font-bold text-content leading-tight truncate">
                                     {{ auth.user.name }}
                                 </span>
-                                <span class="block text-[10px] text-content-subtle truncate">
+                                <span class="block text-[10.5px] text-content-subtle truncate mt-0.5">
                                     {{ auth.user.department || 'PT NKRI' }}
                                 </span>
                             </div>
@@ -304,33 +304,23 @@ onUnmounted(() => {
                         <div
                             v-if="isAccountDropdownOpen"
                             @click.outside="isAccountDropdownOpen = false"
-                            class="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-border shadow-lg py-2 z-50 animate-fade-in"
+                            class="absolute right-0 mt-2.5 w-60 rounded-2xl bg-white border border-border shadow-xl py-2 z-50 animate-fade-in"
                         >
-                            <div class="px-4 py-2 border-b border-border/70">
-                                <p class="text-xs font-bold text-content truncate">{{ auth.user.name }}</p>
-                                <p class="text-[11px] text-content-subtle truncate">{{ auth.user.email }}</p>
-                                <div class="mt-1.5 flex flex-wrap gap-1">
-                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-primary-soft text-primary">
+                            <div class="px-4 py-3 border-b border-border/70">
+                                <p class="text-xs sm:text-sm font-bold text-content truncate">{{ auth.user.name }}</p>
+                                <p class="text-[11px] text-content-subtle truncate mt-0.5">{{ auth.user.email }}</p>
+                                <div class="mt-2 flex flex-wrap gap-1">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary-soft text-primary border border-primary-ring/40">
                                         {{ auth.user.department }}
                                     </span>
                                 </div>
                             </div>
 
-                            <!-- Link ke Filament Admin jika memiliki izin -->
-                            <a
-                                v-if="auth.user.can_access_admin"
-                                href="/admin"
-                                class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-content hover:bg-primary-soft hover:text-primary transition-colors"
-                            >
-                                <ShieldCheck class="w-4 h-4 text-primary" />
-                                <span>Panel Admin CMS</span>
-                            </a>
-
                             <!-- Tombol Keluar (Logout) -->
                             <button
                                 type="button"
                                 @click="handleLogout"
-                                class="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors text-left"
+                                class="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors text-left"
                             >
                                 <LogOut class="w-4 h-4 text-red-500" />
                                 <span>Keluar dari Portal</span>
@@ -342,7 +332,7 @@ onUnmounted(() => {
                     <Link
                         v-else
                         href="/login"
-                        class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold text-white bg-primary hover:bg-primary-hover shadow-xs hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-primary hover:bg-primary-hover shadow-sm hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary-ring"
                     >
                         <LogIn class="w-3.5 h-3.5" />
                         <span>Masuk Portal</span>
@@ -365,15 +355,15 @@ onUnmounted(() => {
 
             <div class="relative max-w-4xl mx-auto text-center space-y-6">
                 
-                <!-- Badge Info Nyata Sistem (Real Data Counter) -->
-                <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-primary-soft border border-primary-ring/60 shadow-xs">
-                    <img src="/images/logo-emblem.png" alt="Logo NKRI" class="w-4 h-4 object-contain" />
-                    <span v-if="auth.user" class="text-xs font-bold text-primary tracking-wide">
-                        {{ stats.accessible_count }} dari {{ stats.total_count }} sistem digital dapat Anda akses
-                    </span>
-                    <span v-else class="text-xs font-bold text-primary tracking-wide">
-                        {{ stats.total_count }} sistem digital operasional aktif terpusat
-                    </span>
+                <!-- Logo Resmi NKRI di Tengah di Atas Text -->
+                <div class="flex justify-center items-center pb-1">
+                    <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-3xl bg-white p-3.5 shadow-md border border-border flex items-center justify-center transition-transform hover:scale-105 duration-200">
+                        <img 
+                            src="/images/logo-emblem.png" 
+                            alt="Logo PT Nanggala Kencana Rekatama Indonesia" 
+                            class="w-full h-full object-contain"
+                        />
+                    </div>
                 </div>
 
                 <!-- Judul Utama Hero dari Pengaturan Portal -->

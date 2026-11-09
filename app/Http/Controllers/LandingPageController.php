@@ -91,7 +91,7 @@ class LandingPageController extends Controller
                     'department' => $user->department?->name ?? 'Lintas Departemen',
                     'department_code' => $user->department?->code ?? '-',
                     'roles' => $user->getRoleNames(),
-                    'can_access_admin' => $user->canAccessPanel(app(\Filament\Panel::class)),
+                    'is_super_admin' => $user->hasRole('Super Admin'),
                 ] : null,
             ],
             'settings' => $settings,

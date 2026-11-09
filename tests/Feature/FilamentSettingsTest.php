@@ -23,7 +23,7 @@ class FilamentSettingsTest extends TestCase
     {
         $admin = User::where('email', 'admin@nkri.co.id')->first();
 
-        $this->actingAs($admin)
+        $this->actingAs($admin, 'admin')
             ->get('/admin/manage-settings')
             ->assertSuccessful();
     }
@@ -46,8 +46,9 @@ class FilamentSettingsTest extends TestCase
         $this->assertEquals('Akses seluruh aplikasi perusahaan dalam satu pintu.', Setting::get('hero_description'));
         $this->assertEquals('PT NKRI 2026. Hak Cipta Dilindungi.', Setting::get('footer_text'));
 
-        // Pastikan perubahan langsung tampak di landing page publik
-        $this->get('/')
+        // Pastikan perubahan langsung tampak di landing page portal
+        $this->actingAs($admin, 'web')
+            ->get('/')
             ->assertSuccessful()
             ->assertInertia(fn ($page) => 
                 $page->where('settings.hero_title', 'Portal Terpadu PT NKRI V2')

@@ -17,12 +17,11 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory, Notifiable, HasRoles;
 
     /**
-     * Memastikan hanya role Super Admin, Admin Sistem, dan Admin Konten yang aktif
-     * yang diperkenankan masuk ke panel Filament CMS.
+     * Memastikan hanya role Super Admin yang aktif yang diperkenankan masuk ke panel CMS.
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_active && $this->hasAnyRole(['Super Admin', 'Admin Sistem', 'Admin Konten']);
+        return $this->is_active && $this->hasRole('Super Admin');
     }
 
     /**
