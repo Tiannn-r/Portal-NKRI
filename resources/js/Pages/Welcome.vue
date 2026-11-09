@@ -239,15 +239,15 @@ onUnmounted(() => {
                     </div>
                 </button>
 
-                <!-- Menu Anchor Navigasi di Tengah -->
-                <nav class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Menu Anchor Navigasi di Tengah (Padding Lega, Proporsional & Elegan) -->
+                <nav class="flex items-center gap-2 sm:gap-3">
                     <button
                         type="button"
                         @click="scrollToSection('hero')"
-                        class="px-4.5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150"
+                        class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200"
                         :class="activeSection === 'hero' 
-                            ? 'bg-primary-soft text-primary font-bold shadow-xs' 
-                            : 'text-content-muted hover:text-content hover:bg-gray-100'"
+                            ? 'bg-primary-soft text-primary font-bold shadow-xs border border-primary-ring/40' 
+                            : 'text-content-muted hover:text-content hover:bg-gray-100/80 border border-transparent'"
                     >
                         Beranda
                     </button>
@@ -257,10 +257,10 @@ onUnmounted(() => {
                         v-if="announcements && announcements.length > 0"
                         type="button"
                         @click="scrollToSection('announcements')"
-                        class="px-4.5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 flex items-center gap-1.5"
+                        class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2"
                         :class="activeSection === 'announcements' 
-                            ? 'bg-primary-soft text-primary font-bold shadow-xs' 
-                            : 'text-content-muted hover:text-content hover:bg-gray-100'"
+                            ? 'bg-primary-soft text-primary font-bold shadow-xs border border-primary-ring/40' 
+                            : 'text-content-muted hover:text-content hover:bg-gray-100/80 border border-transparent'"
                     >
                         <span>Pengumuman</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
@@ -269,10 +269,10 @@ onUnmounted(() => {
                     <button
                         type="button"
                         @click="scrollToSection('systems')"
-                        class="px-4.5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150"
+                        class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200"
                         :class="activeSection === 'systems' 
-                            ? 'bg-primary-soft text-primary font-bold shadow-xs' 
-                            : 'text-content-muted hover:text-content hover:bg-gray-100'"
+                            ? 'bg-primary-soft text-primary font-bold shadow-xs border border-primary-ring/40' 
+                            : 'text-content-muted hover:text-content hover:bg-gray-100/80 border border-transparent'"
                     >
                         Sistem
                     </button>
