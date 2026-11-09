@@ -20,19 +20,11 @@ class LandingPageTest extends TestCase
         $this->seed();
     }
 
-    public function test_guest_can_render_landing_page(): void
+    public function test_guest_is_redirected_to_login(): void
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('Welcome')
-                ->has('settings')
-                ->has('systems')
-                ->has('categories')
-                ->where('settings.hero_title', 'Selamat datang di Portal NKRI')
-                ->where('auth.user', null)
-        );
+        $response->assertRedirect('/login');
     }
 
     public function test_authenticated_user_sees_accurate_accessible_count(): void
@@ -91,3 +83,4 @@ class LandingPageTest extends TestCase
         $response->assertStatus(401);
     }
 }
+

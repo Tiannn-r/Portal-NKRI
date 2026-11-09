@@ -94,29 +94,35 @@ const demoAccounts = [
 
                 <!-- TEKS UTAMA -->
                 <div class="relative z-10 mt-10 lg:mt-0 space-y-4">
-                    <!-- Label kecil di atas judul -->
-                    <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.18em]
-                                 text-white/50 border border-white/15 rounded-full px-3 py-1">
-                        Portal Korporat
-                    </span>
+                    <!-- Label keamanan di atas judul -->
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.16em]
+                                     text-white/80 border border-white/20 bg-white/10 rounded-full px-3 py-0.5">
+                            Sistem Intranet Terpadu
+                        </span>
+                        <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.16em]
+                                     text-amber-200 border border-amber-300/30 bg-amber-400/10 rounded-full px-2.5 py-0.5">
+                            Akses Terbatas & Rahasia
+                        </span>
+                    </div>
 
                     <h1 class="text-3xl lg:text-[2.1rem] font-extrabold text-white leading-[1.18] tracking-tight">
-                        Selamat<br/>Datang.
+                        Portal Layanan<br/>Seluruh Divisi.
                     </h1>
 
-                    <p class="text-[13px] text-white/65 leading-relaxed max-w-[22ch]">
-                        Satu gerbang untuk seluruh sistem digital perusahaan.
+                    <p class="text-[13px] text-white/75 leading-relaxed max-w-[28ch]">
+                        Gerbang peluncur resmi instrumen kerja internal PT Nanggala Kencana Rekatama Indonesia.
                     </p>
 
-                    <!-- Tiga poin keunggulan — minimalis -->
+                    <!-- Tiga poin keunggulan & keamanan -->
                     <ul class="space-y-2.5 pt-1">
                         <li v-for="(item, i) in [
-                            'Akses sistem sesuai hak Anda',
-                            'Keamanan sesi & kebijakan sandi',
-                            'Dikelola penuh oleh tim IT',
+                            'Otorisasi ketat berbasis divisi & wewenang jabatan',
+                            'Perlindungan integritas operasional manufaktur rahasia',
+                            'Pengawasan sesi & audit peluncuran terenkripsi',
                         ]" :key="i" class="flex items-center gap-2.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
-                            <span class="text-[12px] text-white/60">{{ item }}</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-300 shrink-0" />
+                            <span class="text-[12px] text-white/80">{{ item }}</span>
                         </li>
                     </ul>
                 </div>

@@ -93,3 +93,4 @@ class ManageSettings extends Page
             ->send();
     }
 }
+

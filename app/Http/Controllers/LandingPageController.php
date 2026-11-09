@@ -26,9 +26,9 @@ class LandingPageController extends Controller
 
         // 1. Ambil Pengaturan Portal (Hero & Footer)
         $settings = [
-            'hero_title' => Setting::get('hero_title', 'Selamat datang di Portal NKRI'),
-            'hero_description' => Setting::get('hero_description', 'Penyimpan seluruh sistem yang dibuat untuk PT NKRI'),
-            'footer_text' => Setting::get('footer_text', 'PT Nanggala Kencana Rekatama Indonesia. Seluruh hak cipta dilindungi.'),
+            'hero_title' => Setting::get('hero_title', 'Sistem Informasi Terpadu Seluruh Divisi'),
+            'hero_description' => Setting::get('hero_description', 'Gerbang peluncur tunggal instrumen kerja internal PT Nanggala Kencana Rekatama Indonesia. Akses terproteksi dan terenkripsi khusus karyawan terdaftar.'),
+            'footer_text' => Setting::get('footer_text', 'PT Nanggala Kencana Rekatama Indonesia. Sistem Internal — Klasifikasi: Terbatas & Rahasia.'),
         ];
 
         // 2. Ambil Pengumuman Aktif yang Terbit
@@ -105,3 +105,4 @@ class LandingPageController extends Controller
         ]);
     }
 }
+

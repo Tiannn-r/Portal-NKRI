@@ -41,9 +41,9 @@ const props = defineProps({
     settings: {
         type: Object,
         default: () => ({
-            hero_title: 'Selamat datang di Portal NKRI',
-            hero_description: 'Penyimpan seluruh sistem yang dibuat untuk PT NKRI',
-            footer_text: 'PT Nanggala Kencana Rekatama Indonesia. Seluruh hak cipta dilindungi.',
+            hero_title: 'Sistem Informasi Terpadu Seluruh Divisi',
+            hero_description: 'Gerbang peluncur tunggal instrumen kerja internal PT Nanggala Kencana Rekatama Indonesia. Akses terproteksi dan terenkripsi khusus karyawan terdaftar.',
+            footer_text: 'PT Nanggala Kencana Rekatama Indonesia. Sistem Internal — Klasifikasi: Terbatas & Rahasia.',
         }),
     },
     announcements: {

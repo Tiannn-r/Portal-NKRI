@@ -30,3 +30,4 @@ class FavoriteController extends Controller
         return redirect()->back()->with('success', $isFavorited ? 'Aplikasi ditambahkan ke favorit.' : 'Aplikasi dihapus dari favorit.');
     }
 }
+
