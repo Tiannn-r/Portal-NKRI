@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AppLauncherController;
+use App\Models\AppCategory;
+use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,13 +15,28 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Halaman Akar: Arahkan ke dashboard jika sudah login, atau ke formulir login jika belum
+// Halaman Beranda / Landing Page Utama (Presisi sesuai Desain UI Referensi)
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('dashboard');
-    }
-    return redirect()->route('login');
-});
+    $categories = AppCategory::orderBy('sort_order')->get(['id', 'name', 'slug']);
+    
+    $featuredApps = Application::with('category')
+        ->where('status', 'active')
+        ->orderBy('sort_order')
+        ->take(3)
+        ->get();
+
+    return Inertia::render('Welcome', [
+        'auth' => [
+            'user' => Auth::user() ? [
+                'id' => Auth::user()->id,
+                'name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ] : null,
+        ],
+        'categories' => $categories,
+        'featuredApps' => $featuredApps,
+    ]);
+})->name('home');
 
 // Autentikasi Tamu (Guest)
 Route::middleware('guest')->group(function () {
@@ -28,5 +47,6 @@ Route::middleware('guest')->group(function () {
 // Fitur Pengguna Terautentikasi (Auth)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/apps/{slug}/open', [AppLauncherController::class, 'open'])->name('apps.open');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

@@ -235,3 +235,4 @@ const fillDemoAccount = (email, password) => {
         </div>
     </div>
 </template>
+
