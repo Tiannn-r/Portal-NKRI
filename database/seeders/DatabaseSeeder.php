@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ApplicationSeeder::class,
             AccessMatrixSeeder::class,
             AnnouncementSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

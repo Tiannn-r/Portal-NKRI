@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Announcement;
+use App\Models\AppCategory;
+use App\Models\Application;
+use App\Models\Setting;
+use App\Services\AccessResolver;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class LandingPageController extends Controller
+{
+    public function __construct(
+        protected AccessResolver $accessResolver
+    ) {}
+
+    /**
+     * Tampilkan landing page terpadu satu halaman scroll.
+     */
+    public function index(Request $request): Response
+    {
+        $user = $request->user();
+
+        // 1. Ambil Pengaturan Portal (Hero & Footer)
+        $settings = [
+            'hero_title' => Setting::get('hero_title', 'Selamat datang di Portal NKRI'),
+            'hero_description' => Setting::get('hero_description', 'Penyimpan seluruh sistem yang dibuat untuk PT NKRI'),
+            'footer_text' => Setting::get('footer_text', 'PT Nanggala Kencana Rekatama Indonesia. Seluruh hak cipta dilindungi.'),
+        ];
+
+        // 2. Ambil Pengumuman Aktif yang Terbit
+        $announcements = Announcement::where('is_published', true)
+            ->where(function ($q) {
+                $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+            })
+            ->latest()
+            ->get(['id', 'title', 'body', 'created_at']);
+
+        // 3. Kategori Sistem
+        $categories = AppCategory::orderBy('sort_order')->get(['id', 'name', 'slug']);
+
+        // 4. Daftar Sistem Digital (Katalog Lengkap tanpa inactive)
+        $allApps = Application::with(['category', 'roles', 'departments', 'userExceptions'])
+            ->where('status', '!=', 'inactive')
+            ->orderBy('sort_order')
+            ->get();
+
+        $favoriteIds = $user
+            ? $user->favoriteApplications()->pluck('applications.id')->toArray()
+            : [];
+
+        $systems = $allApps->map(function (Application $app) use ($user, $favoriteIds) {
+            $canAccess = $user ? $this->accessResolver->canAccess($user, $app) : false;
+
+            return [
+                'id' => $app->id,
+                'name' => $app->name,
+                'slug' => $app->slug,
+                'description' => $app->description,
+                'icon' => $app->icon,
+                'status' => $app->status,
+                'login_hint' => $app->login_hint,
+                'open_in_new_tab' => $app->open_in_new_tab,
+                'category' => $app->category ? [
+                    'id' => $app->category->id,
+                    'name' => $app->category->name,
+                    'slug' => $app->category->slug,
+                ] : null,
+                'can_access' => $canAccess,
+                'is_locked' => !$canAccess,
+                'is_favorite' => in_array($app->id, $favoriteIds),
+            ];
+        });
+
+        // 5. Statistik Nyata: Jumlah sistem yang tersedia bagi user
+        $accessibleCount = $systems->where('can_access', true)->count();
+        $totalActiveCount = $systems->count();
+
+        return Inertia::render('Welcome', [
+            'auth' => [
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'department' => $user->department?->name ?? 'Lintas Departemen',
+                    'department_code' => $user->department?->code ?? '-',
+                    'roles' => $user->getRoleNames(),
+                    'can_access_admin' => $user->canAccessPanel(app(\Filament\Panel::class)),
+                ] : null,
+            ],
+            'settings' => $settings,
+            'announcements' => $announcements,
+            'categories' => $categories,
+            'systems' => $systems,
+            'stats' => [
+                'accessible_count' => $accessibleCount,
+                'total_count' => $totalActiveCount,
+            ],
+        ]);
+    }
+}
