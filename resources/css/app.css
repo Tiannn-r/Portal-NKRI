@@ -29,3 +29,45 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* ==========================================================================
+   Animasi Halus & Elegan (Simple, Smooth, Subtle, High Performance)
+   ========================================================================== */
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes textEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-card-enter {
+    animation: cardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-text-enter {
+    animation: textEntrance 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-card-enter,
+    .animate-text-enter {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+

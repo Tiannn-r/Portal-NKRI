@@ -365,12 +365,12 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Judul Utama Hero dari Pengaturan Portal -->
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-content tracking-tight leading-tight">
+                <h1 class="animate-text-enter text-3xl sm:text-4xl md:text-5xl font-extrabold text-content tracking-tight leading-tight">
                     {{ settings.hero_title || 'Selamat datang di Portal NKRI' }}
                 </h1>
 
                 <!-- Deskripsi Hero dari Pengaturan Portal -->
-                <p class="max-w-2xl mx-auto text-sm sm:text-base text-content-muted leading-relaxed">
+                <p class="animate-text-enter max-w-2xl mx-auto text-sm sm:text-base text-content-muted leading-relaxed" style="animation-delay: 90ms;">
                     {{ settings.hero_description || 'Penyimpan seluruh sistem yang dibuat untuk PT NKRI' }}
                 </p>
 
@@ -415,18 +415,19 @@ onUnmounted(() => {
                 <!-- Grid Pengumuman -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div
-                        v-for="item in announcements"
+                        v-for="(item, idx) in announcements"
                         :key="item.id"
-                        class="p-5 rounded-2xl bg-white border border-border hover:border-primary-ring shadow-xs hover:shadow-sm transition-all"
+                        class="animate-card-enter p-5 rounded-2xl bg-white border border-border hover:border-primary-ring shadow-xs hover:shadow-sm transition-all"
+                        :style="{ animationDelay: `${idx * 60}ms` }"
                     >
                         <div class="flex items-center gap-2 text-[11px] font-semibold text-content-subtle mb-2">
                             <Calendar class="w-3.5 h-3.5 text-primary" />
                             <span>{{ formatDate(item.created_at) }}</span>
                         </div>
-                        <h3 class="text-sm font-bold text-content mb-1.5 leading-snug">
+                        <h3 class="animate-text-enter text-sm font-bold text-content mb-1.5 leading-snug" :style="{ animationDelay: `${idx * 60 + 60}ms` }">
                             {{ item.title }}
                         </h3>
-                        <p class="text-xs text-content-muted leading-relaxed whitespace-pre-line">
+                        <p class="animate-text-enter text-xs text-content-muted leading-relaxed whitespace-pre-line" :style="{ animationDelay: `${idx * 60 + 100}ms` }">
                             {{ item.body }}
                         </p>
                     </div>
@@ -518,19 +519,20 @@ onUnmounted(() => {
                 <!-- Grid Kartu Sistem (3 Kolom di Layar Lebar) -->
                 <div v-if="filteredSystems.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div
-                        v-for="system in filteredSystems"
+                        v-for="(system, index) in filteredSystems"
                         :key="system.id"
-                        class="relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 border"
+                        class="animate-card-enter relative rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 border hover:-translate-y-1 hover:shadow-md"
+                        :style="{ animationDelay: `${Math.min(index * 40, 400)}ms` }"
                         :class="system.is_locked 
                             ? 'bg-[#F9FAFB]/90 border-dashed border-gray-300 opacity-70' 
-                            : 'bg-white border-border shadow-xs hover:shadow-md hover:border-primary-ring'"
+                            : 'bg-white border-border shadow-xs hover:border-primary-ring'"
                     >
                         <!-- Bagian Atas Kartu: Ikon & Tombol Bintang Favorit -->
                         <div>
                             <div class="flex items-start justify-between gap-3 mb-4">
                                 <div class="flex items-center gap-3">
                                     <div 
-                                        class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border"
+                                        class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-transform duration-200 group-hover:scale-105"
                                         :class="system.is_locked
                                             ? 'bg-gray-100 border-gray-200 text-gray-400'
                                             : 'bg-primary-soft border-primary-ring/40 text-primary'"
@@ -560,21 +562,26 @@ onUnmounted(() => {
                                 </button>
                             </div>
 
-                            <!-- Judul & Deskripsi Sistem -->
+                            <!-- Judul & Deskripsi Sistem dengan Animasi Masuk Halus -->
                             <h3 
-                                class="text-base font-bold text-content leading-snug mb-1.5"
+                                class="animate-text-enter text-base font-bold text-content leading-snug mb-1.5"
+                                :style="{ animationDelay: `${Math.min(index * 40 + 60, 460)}ms` }"
                                 :class="{ 'text-gray-500': system.is_locked }"
                             >
                                 {{ system.name }}
                             </h3>
-                            <p class="text-xs text-content-muted leading-relaxed line-clamp-2 mb-4">
+                            <p 
+                                class="animate-text-enter text-xs text-content-muted leading-relaxed line-clamp-2 mb-4"
+                                :style="{ animationDelay: `${Math.min(index * 40 + 100, 500)}ms` }"
+                            >
                                 {{ system.description || 'Sistem operasional digital PT Nanggala Kencana Rekatama Indonesia.' }}
                             </p>
 
                             <!-- login_hint bila ada -->
                             <div 
                                 v-if="system.login_hint" 
-                                class="mb-4 px-3 py-2 rounded-xl bg-amber-50/70 border border-amber-200/60 flex items-start gap-2 text-[11px] text-amber-900"
+                                class="animate-text-enter mb-4 px-3 py-2 rounded-xl bg-amber-50/70 border border-amber-200/60 flex items-start gap-2 text-[11px] text-amber-900"
+                                :style="{ animationDelay: `${Math.min(index * 40 + 130, 530)}ms` }"
                             >
                                 <KeyRound class="w-3.5 h-3.5 shrink-0 mt-0.5 text-amber-600" />
                                 <span class="leading-tight">{{ system.login_hint }}</span>
