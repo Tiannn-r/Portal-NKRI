@@ -99,46 +99,52 @@ const isAccountDropdownOpen = ref(false);
 
 // Sliding Indicator State untuk Animasi Geser Halus (Sliding Pill)
 const navRef = ref(null);
-const tabRefs = ref({});
+const heroTabRef = ref(null);
+const announcementsTabRef = ref(null);
+const systemsTabRef = ref(null);
 const isIndicatorInitialized = ref(false);
+
 const indicatorStyle = ref({
-    left: '0px',
-    top: '0px',
+    transform: 'translate3d(0, 0, 0)',
     width: '0px',
     height: '0px',
+    top: '0px',
     opacity: 0,
 });
 
-const setTabRef = (key, el) => {
-    if (el) {
-        tabRefs.value[key] = el;
-    } else {
-        delete tabRefs.value[key];
-    }
+const getActiveTabElement = () => {
+    if (activeSection.value === 'hero') return heroTabRef.value;
+    if (activeSection.value === 'announcements') return announcementsTabRef.value;
+    if (activeSection.value === 'systems') return systemsTabRef.value;
+    return null;
 };
 
 const updateIndicator = () => {
-    const activeEl = tabRefs.value[activeSection.value];
+    const activeEl = getActiveTabElement();
     if (activeEl) {
         indicatorStyle.value = {
-            left: `${activeEl.offsetLeft}px`,
-            top: `${activeEl.offsetTop}px`,
+            transform: `translate3d(${activeEl.offsetLeft}px, 0, 0)`,
             width: `${activeEl.offsetWidth}px`,
             height: `${activeEl.offsetHeight}px`,
+            top: `${activeEl.offsetTop}px`,
             opacity: 1,
-        };
-    } else {
-        indicatorStyle.value = {
-            ...indicatorStyle.value,
-            opacity: 0,
         };
     }
 };
 
+let isProgrammaticScroll = false;
+let scrollEndTimer = null;
+
 const handleNavClick = (id) => {
     activeSection.value = id;
+    isProgrammaticScroll = true;
     updateIndicator();
     scrollToSection(id);
+
+    if (scrollEndTimer) clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => {
+        isProgrammaticScroll = false;
+    }, 850);
 };
 
 watch(activeSection, () => {
@@ -203,14 +209,26 @@ const scrollToSection = (id) => {
 
 // Scroll Spy untuk Menyorot Link Menu Aktif Sesuai Posisi Scroll
 const handleScroll = () => {
+    // Jangan ubah activeSection saat user sedang menjalankan scroll hasil klik
+    if (isProgrammaticScroll) return;
+
+    const scrollY = window.scrollY;
+
+    // Jika scroll sudah di dekat ujung bawah halaman, pasti aktifkan 'systems'
+    if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 60) {
+        if (activeSection.value !== 'systems') {
+            activeSection.value = 'systems';
+        }
+        return;
+    }
+
     const sections = ['hero'];
     if (props.announcements && props.announcements.length > 0) {
         sections.push('announcements');
     }
     sections.push('systems');
 
-    const scrollY = window.scrollY;
-    const triggerOffset = 140;
+    const triggerOffset = 150;
 
     for (const id of sections) {
         const el = document.getElementById(id);
@@ -304,23 +322,23 @@ onUnmounted(() => {
                     </div>
                 </button>
 
-                <!-- Menu Anchor Navigasi di Tengah (Animasi Geser Halus / Sliding Pill Indicator) -->
+                <!-- Menu Anchor Navigasi di Tengah (Animasi Geser Halus Bebas Glitch) -->
                 <nav ref="navRef" class="relative flex items-center gap-1.5 sm:gap-3">
-                    <!-- Kapsul Latar Belakang yang Meluncur Mulus (Sliding Pill) -->
+                    <!-- Kapsul Latar Belakang yang Meluncur Mulus (Sliding Pill Hardware Accelerated) -->
                     <div
-                        class="absolute rounded-full bg-primary-soft border border-primary-ring/40 shadow-xs pointer-events-none"
+                        class="absolute left-0 rounded-full bg-primary-soft border border-primary-ring/40 shadow-xs pointer-events-none will-change-transform"
                         :class="isIndicatorInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
                         :style="indicatorStyle"
                     ></div>
 
                     <!-- Tombol Beranda -->
                     <button
-                        :ref="(el) => setTabRef('hero', el)"
+                        ref="heroTabRef"
                         type="button"
                         @click="handleNavClick('hero')"
-                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
+                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none"
                         :class="activeSection === 'hero' 
-                            ? 'text-primary font-bold' 
+                            ? 'text-primary' 
                             : 'text-content-muted hover:text-content'"
                     >
                         Beranda
@@ -329,12 +347,12 @@ onUnmounted(() => {
                     <!-- Menu Pengumuman: Otomatis Disembunyikan Jika Kosong -->
                     <button
                         v-if="announcements && announcements.length > 0"
-                        :ref="(el) => setTabRef('announcements', el)"
+                        ref="announcementsTabRef"
                         type="button"
                         @click="handleNavClick('announcements')"
-                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none flex items-center gap-1.5 sm:gap-2"
+                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none flex items-center gap-1.5 sm:gap-2"
                         :class="activeSection === 'announcements' 
-                            ? 'text-primary font-bold' 
+                            ? 'text-primary' 
                             : 'text-content-muted hover:text-content'"
                     >
                         <span>Pengumuman</span>
@@ -343,12 +361,12 @@ onUnmounted(() => {
 
                     <!-- Tombol Sistem -->
                     <button
-                        :ref="(el) => setTabRef('systems', el)"
+                        ref="systemsTabRef"
                         type="button"
                         @click="handleNavClick('systems')"
-                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
+                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none"
                         :class="activeSection === 'systems' 
-                            ? 'text-primary font-bold' 
+                            ? 'text-primary' 
                             : 'text-content-muted hover:text-content'"
                     >
                         Sistem
