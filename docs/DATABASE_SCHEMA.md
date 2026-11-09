@@ -118,3 +118,4 @@ Dokumen ini mendefinisikan seluruh tabel, tipe data, kunci primer, kunci asing, 
 * `value` : TEXT NULLABLE
 * `type` : VARCHAR(50) DEFAULT 'string'
 * `created_at`, `updated_at` : TIMESTAMP
+

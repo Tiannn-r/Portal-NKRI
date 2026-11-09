@@ -88,3 +88,4 @@ Logika hak akses dipusatkan secara eksklusif pada class `App\Services\AccessReso
   * `text-subtle`: `#6B7280`
 * **Prinsip Warna:** Merah hanya digunakan sebagai aksen hemat (tombol utama, status aktif, fokus keyboard), bukan blok warna besar.
 * **Anti-Pattern (Dilarang):** Tanpa gradasi ungu/pink, tanpa efek glassmorphism, tanpa bayangan tebal, tanpa emoji sebagai icon, tanpa kartu statistik palsu, dan tanpa teks marketing kosong.
+

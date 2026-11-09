@@ -71,3 +71,4 @@ Pengembangan dilakukan secara bertahap dan wajib berhenti untuk konfirmasi setel
 * **Langkah 7:** Test akhir, evaluasi performa query (bebas N+1), checklist deploy.
 
 Setiap selesai satu langkah, buat commit Git dengan pesan yang deskriptif dan buat laporan ringkas.
+

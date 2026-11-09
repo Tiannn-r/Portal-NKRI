@@ -96,3 +96,4 @@ Untuk menjaga performa tetap ringan dan bebas lag:
   * `Application` (saat nama, url, status, atau kategori berubah).
   * `ApplicationRole`, `ApplicationDepartment`, `ApplicationUser` (saat matriks hak akses dimodifikasi).
   * `User` (saat departemen atau role user diperbarui).
+

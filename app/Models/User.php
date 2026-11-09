@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal (mass-assignment protection).
      *
      * @var array<int, string>
      */
@@ -20,10 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'department_id',
+        'is_active',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang disembunyikan saat serialisasi.
      *
      * @var array<int, string>
      */
@@ -33,7 +38,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Konversi tipe data atribut.
      *
      * @return array<string, string>
      */
@@ -42,6 +47,50 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Relasi ke Departemen pengguna.
+     */
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    /**
+     * Relasi ke pengecualian hak akses aplikasi (allow/deny).
+     */
+    public function applicationExceptions(): BelongsToMany
+    {
+        return $this->belongsToMany(Application::class, 'application_user')
+            ->withPivot('type', 'notes')
+            ->withTimestamps();
+    }
+
+    /**
+     * Relasi ke daftar favorit pengguna.
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(UserFavorite::class);
+    }
+
+    /**
+     * Relasi langsung ke aplikasi yang difavoritkan.
+     */
+    public function favoriteApplications(): BelongsToMany
+    {
+        return $this->belongsToMany(Application::class, 'user_favorites')
+            ->withTimestamps();
+    }
+
+    /**
+     * Relasi ke riwayat peluncuran aplikasi pengguna.
+     */
+    public function launchLogs(): HasMany
+    {
+        return $this->hasMany(AppLaunchLog::class);
     }
 }
