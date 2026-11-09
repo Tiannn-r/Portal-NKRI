@@ -355,15 +355,13 @@ onUnmounted(() => {
 
             <div class="relative max-w-4xl mx-auto text-center space-y-6">
                 
-                <!-- Logo Resmi NKRI di Tengah di Atas Text -->
-                <div class="flex justify-center items-center pb-1">
-                    <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-3xl bg-white p-3.5 shadow-md border border-border flex items-center justify-center transition-transform hover:scale-105 duration-200">
-                        <img 
-                            src="/images/logo-emblem.png" 
-                            alt="Logo PT Nanggala Kencana Rekatama Indonesia" 
-                            class="w-full h-full object-contain"
-                        />
-                    </div>
+                <!-- Logo Resmi NKRI di Tengah di Atas Text (Besar & Bersih Tanpa Border) -->
+                <div class="flex justify-center items-center pb-2">
+                    <img 
+                        src="/images/logo-emblem.png" 
+                        alt="Logo PT Nanggala Kencana Rekatama Indonesia" 
+                        class="w-28 h-28 sm:w-36 sm:h-36 object-contain drop-shadow-sm hover:scale-105 transition-transform duration-300"
+                    />
                 </div>
 
                 <!-- Judul Utama Hero dari Pengaturan Portal -->
