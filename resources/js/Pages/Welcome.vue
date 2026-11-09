@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import { 
@@ -97,6 +97,56 @@ const showOnlyFavorites = ref(false);
 const activeSection = ref('hero');
 const isAccountDropdownOpen = ref(false);
 
+// Sliding Indicator State untuk Animasi Geser Halus (Sliding Pill)
+const navRef = ref(null);
+const tabRefs = ref({});
+const isIndicatorInitialized = ref(false);
+const indicatorStyle = ref({
+    left: '0px',
+    top: '0px',
+    width: '0px',
+    height: '0px',
+    opacity: 0,
+});
+
+const setTabRef = (key, el) => {
+    if (el) {
+        tabRefs.value[key] = el;
+    } else {
+        delete tabRefs.value[key];
+    }
+};
+
+const updateIndicator = () => {
+    const activeEl = tabRefs.value[activeSection.value];
+    if (activeEl) {
+        indicatorStyle.value = {
+            left: `${activeEl.offsetLeft}px`,
+            top: `${activeEl.offsetTop}px`,
+            width: `${activeEl.offsetWidth}px`,
+            height: `${activeEl.offsetHeight}px`,
+            opacity: 1,
+        };
+    } else {
+        indicatorStyle.value = {
+            ...indicatorStyle.value,
+            opacity: 0,
+        };
+    }
+};
+
+const handleNavClick = (id) => {
+    activeSection.value = id;
+    updateIndicator();
+    scrollToSection(id);
+};
+
+watch(activeSection, () => {
+    nextTick(() => {
+        updateIndicator();
+    });
+});
+
 // Format Tanggal Bahasa Indonesia
 const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -168,7 +218,9 @@ const handleScroll = () => {
             const top = el.offsetTop - triggerOffset;
             const bottom = top + el.offsetHeight;
             if (scrollY >= top && scrollY < bottom) {
-                activeSection.value = id;
+                if (activeSection.value !== id) {
+                    activeSection.value = id;
+                }
             }
         }
     }
@@ -199,11 +251,24 @@ const handleLogout = () => {
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateIndicator, { passive: true });
     handleScroll();
+    nextTick(() => {
+        updateIndicator();
+        setTimeout(() => {
+            isIndicatorInitialized.value = true;
+        }, 60);
+    });
+    if (document.fonts) {
+        document.fonts.ready.then(() => {
+            updateIndicator();
+        });
+    }
 });
 
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', updateIndicator);
 });
 </script>
 
@@ -220,7 +285,7 @@ onUnmounted(() => {
                 
                 <!-- Logo & Brand di Sisi Kiri -->
                 <button 
-                    @click="scrollToSection('hero')" 
+                    @click="handleNavClick('hero')" 
                     type="button" 
                     class="flex items-center space-x-3.5 text-left group focus:outline-none focus:ring-2 focus:ring-primary-ring rounded-2xl p-1.5 transition-all"
                 >
@@ -239,15 +304,24 @@ onUnmounted(() => {
                     </div>
                 </button>
 
-                <!-- Menu Anchor Navigasi di Tengah (Padding Lega, Proporsional & Elegan) -->
-                <nav class="flex items-center gap-2 sm:gap-3">
+                <!-- Menu Anchor Navigasi di Tengah (Animasi Geser Halus / Sliding Pill Indicator) -->
+                <nav ref="navRef" class="relative flex items-center gap-2 sm:gap-3">
+                    <!-- Kapsul Latar Belakang yang Meluncur Mulus (Sliding Pill) -->
+                    <div
+                        class="absolute rounded-full bg-primary-soft border border-primary-ring/40 shadow-xs pointer-events-none"
+                        :class="isIndicatorInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
+                        :style="indicatorStyle"
+                    ></div>
+
+                    <!-- Tombol Beranda -->
                     <button
+                        :ref="(el) => setTabRef('hero', el)"
                         type="button"
-                        @click="scrollToSection('hero')"
-                        class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200"
+                        @click="handleNavClick('hero')"
+                        class="relative z-10 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
                         :class="activeSection === 'hero' 
-                            ? 'bg-primary-soft text-primary font-bold shadow-xs border border-primary-ring/40' 
-                            : 'text-content-muted hover:text-content hover:bg-gray-100/80 border border-transparent'"
+                            ? 'text-primary font-bold' 
+                            : 'text-content-muted hover:text-content'"
                     >
                         Beranda
                     </button>
@@ -255,24 +329,27 @@ onUnmounted(() => {
                     <!-- Menu Pengumuman: Otomatis Disembunyikan Jika Kosong -->
                     <button
                         v-if="announcements && announcements.length > 0"
+                        :ref="(el) => setTabRef('announcements', el)"
                         type="button"
-                        @click="scrollToSection('announcements')"
-                        class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2"
+                        @click="handleNavClick('announcements')"
+                        class="relative z-10 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none flex items-center gap-2"
                         :class="activeSection === 'announcements' 
-                            ? 'bg-primary-soft text-primary font-bold shadow-xs border border-primary-ring/40' 
-                            : 'text-content-muted hover:text-content hover:bg-gray-100/80 border border-transparent'"
+                            ? 'text-primary font-bold' 
+                            : 'text-content-muted hover:text-content'"
                     >
                         <span>Pengumuman</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
                     </button>
 
+                    <!-- Tombol Sistem -->
                     <button
+                        :ref="(el) => setTabRef('systems', el)"
                         type="button"
-                        @click="scrollToSection('systems')"
-                        class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200"
+                        @click="handleNavClick('systems')"
+                        class="relative z-10 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 select-none"
                         :class="activeSection === 'systems' 
-                            ? 'bg-primary-soft text-primary font-bold shadow-xs border border-primary-ring/40' 
-                            : 'text-content-muted hover:text-content hover:bg-gray-100/80 border border-transparent'"
+                            ? 'text-primary font-bold' 
+                            : 'text-content-muted hover:text-content'"
                     >
                         Sistem
                     </button>
@@ -378,7 +455,7 @@ onUnmounted(() => {
                 <div class="pt-2 flex items-center justify-center gap-4">
                     <button
                         type="button"
-                        @click="scrollToSection('systems')"
+                        @click="handleNavClick('systems')"
                         class="inline-flex items-center gap-2.5 px-7 py-3 rounded-full text-sm font-bold text-white bg-primary hover:bg-primary-hover shadow-md hover:shadow-lg transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-ring"
                     >
                         <span>Lihat Sistem</span>
