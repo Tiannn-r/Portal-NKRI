@@ -45,3 +45,4 @@ class AppCategorySeeder extends Seeder
         }
     }
 }
+

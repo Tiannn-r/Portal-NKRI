@@ -31,3 +31,4 @@ class AppCategory extends Model
         return $this->hasMany(Application::class, 'app_category_id')->orderBy('sort_order');
     }
 }
+

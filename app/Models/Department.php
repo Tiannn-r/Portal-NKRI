@@ -34,3 +34,4 @@ class Department extends Model
             ->withTimestamps();
     }
 }
+

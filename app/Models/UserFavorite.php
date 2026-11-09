@@ -25,3 +25,4 @@ class UserFavorite extends Model
         return $this->belongsTo(Application::class);
     }
 }
+

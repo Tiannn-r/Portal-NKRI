@@ -154,3 +154,4 @@ class ApplicationSeeder extends Seeder
         }
     }
 }
+

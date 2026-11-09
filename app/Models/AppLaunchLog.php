@@ -35,3 +35,4 @@ class AppLaunchLog extends Model
         return $this->belongsTo(Application::class);
     }
 }
+

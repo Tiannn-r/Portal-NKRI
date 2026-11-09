@@ -40,3 +40,4 @@ class AnnouncementSeeder extends Seeder
         }
     }
 }
+

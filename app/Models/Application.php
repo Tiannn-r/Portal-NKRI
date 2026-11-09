@@ -121,3 +121,4 @@ class Application extends Model
         return $this->hasMany(AppLaunchLog::class);
     }
 }
+
