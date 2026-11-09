@@ -62,12 +62,36 @@ body {
     animation: textEntrance 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* ==========================================================================
+   Scroll-Reveal Card Animation (Mulus Muncul Saat Di-scroll ke Bawah)
+   ========================================================================== */
+.reveal-card {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+    will-change: opacity, transform;
+}
+
+.reveal-card.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.reveal-card.is-revealed:hover {
+    transform: translateY(-4px) scale(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .animate-card-enter,
-    .animate-text-enter {
+    .animate-text-enter,
+    .reveal-card {
         animation: none !important;
         opacity: 1 !important;
         transform: none !important;
+        transition: none !important;
     }
 }
 
