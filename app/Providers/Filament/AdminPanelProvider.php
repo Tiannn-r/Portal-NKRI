@@ -27,7 +27,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Portal NKRI')
+            ->brandName('Portal NKRI - PT Nanggala Kencana Rekatama Indonesia')
+            ->brandLogo(fn () => asset('images/logo-full.png'))
+            ->brandLogoHeight('2.4rem')
             ->font('Plus Jakarta Sans')
             ->colors([
                 'primary' => Color::hex('#B91C1C'),
