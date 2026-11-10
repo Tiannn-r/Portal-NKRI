@@ -52,11 +52,23 @@ class Application extends Model
     }
 
     /**
-     * Validasi URL skema http/https sebelum disimpan ke database.
+     * Booted method untuk validasi dan auto-generate slug.
      */
     protected static function booted(): void
     {
         static::saving(function (Application $app) {
+            // Auto generate slug jika kosong
+            if (empty($app->slug) && !empty($app->name)) {
+                $baseSlug = \Illuminate\Support\Str::slug($app->name);
+                $slug = $baseSlug;
+                $counter = 1;
+                while (static::where('slug', $slug)->where('id', '!=', $app->id ?? 0)->exists()) {
+                    $slug = "{$baseSlug}-{$counter}";
+                    $counter++;
+                }
+                $app->slug = $slug;
+            }
+
             if (!empty($app->url) && !preg_match('/^https?:\/\//i', $app->url)) {
                 throw new InvalidArgumentException('URL aplikasi wajib diawali skema http:// atau https://');
             }

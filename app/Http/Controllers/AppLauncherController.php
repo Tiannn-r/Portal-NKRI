@@ -21,9 +21,9 @@ class AppLauncherController extends Controller
     {
         $user = $request->user();
 
-        // Cari aplikasi berdasarkan slug
+        // Cari aplikasi berdasarkan slug atau id
         $application = Application::where('slug', $slug)
-            ->with(['roles', 'departments', 'userExceptions'])
+            ->orWhere('id', $slug)
             ->firstOrFail();
 
         // 1. Verifikasi hak akses via AccessResolver tunggal

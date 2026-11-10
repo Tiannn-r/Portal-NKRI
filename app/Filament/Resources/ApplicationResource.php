@@ -33,15 +33,7 @@ class ApplicationResource extends Resource
                         ->label('Nama Sistem')
                         ->required()
                         ->maxLength(255)
-                        ->columnSpan(2),
-
-                    Forms\Components\TextInput::make('slug')
-                        ->label('Slug URL')
-                        ->required()
-                        ->maxLength(255)
-                        ->unique(ignoreRecord: true)
-                        ->helperText('Digunakan di URL: /apps/{slug}/open')
-                        ->columnSpan(2),
+                        ->columnSpanFull(),
 
                     Forms\Components\Textarea::make('description')
                         ->label('Deskripsi Singkat')
