@@ -21,6 +21,8 @@ class Application extends Model
         'slug',
         'description',
         'icon',
+        'logo',
+        'image',
         'url',
         'app_category_id',
         'pic_user_id',

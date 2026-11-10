@@ -663,39 +663,48 @@ onUnmounted(() => {
                         v-for="(system, index) in filteredSystems"
                         :key="system.id + '-' + selectedCategory"
                         v-reveal="(index % 3) * 130"
-                        class="reveal-card relative rounded-2xl p-6 flex flex-col justify-between border"
-                        :class="system.is_locked 
-                            ? 'bg-[#F9FAFB]/90 border-dashed border-gray-300 opacity-70' 
-                            : 'bg-white border-border shadow-xs hover:border-primary-ring'"
+                        class="reveal-card group relative rounded-2xl p-5 flex flex-col justify-between border bg-white border-border shadow-xs hover:border-primary-ring/70 hover:shadow-md transition-all duration-200"
                     >
-                        <!-- Bagian Atas Kartu: Ikon & Tombol Bintang Favorit -->
                         <div>
-                            <div class="flex items-start justify-between gap-3 mb-4">
-                                <div class="flex items-center gap-3">
+                            <!-- 1. Bagian Atas: Logo Menyatu Dengan Judul & Tombol Favorit -->
+                            <div class="flex items-start justify-between gap-3 mb-3.5">
+                                <div class="flex items-center gap-3 min-w-0 flex-1">
+                                    <!-- Logo Sistem (Gambar Upload atau Ikon Lucide) -->
                                     <div 
-                                        class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-transform duration-200 group-hover:scale-105"
-                                        :class="system.is_locked
-                                            ? 'bg-gray-100 border-gray-200 text-gray-400'
+                                        class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border transition-transform duration-200 group-hover:scale-105"
+                                        :class="system.logo 
+                                            ? 'bg-white border-border shadow-2xs p-1' 
                                             : 'bg-primary-soft border-primary-ring/40 text-primary'"
                                     >
-                                        <component :is="getSystemIcon(system.icon)" class="w-6 h-6" />
+                                        <img 
+                                            v-if="system.logo" 
+                                            :src="system.logo" 
+                                            :alt="system.name" 
+                                            class="w-full h-full object-contain rounded-lg" 
+                                        />
+                                        <component v-else :is="getSystemIcon(system.icon)" class="w-5 h-5" />
                                     </div>
-                                    <div>
-                                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-gray-100 text-content-muted">
+                                    
+                                    <!-- Judul Sistem & Kategori -->
+                                    <div class="min-w-0 flex-1">
+                                        <h3 class="text-sm font-bold text-content leading-snug truncate group-hover:text-primary transition-colors" :title="system.name">
+                                            {{ system.name }}
+                                        </h3>
+                                        <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-100 text-content-muted mt-0.5">
                                             {{ system.category?.name || 'Sistem' }}
                                         </span>
                                     </div>
                                 </div>
 
-                                <!-- Tombol Favorit (Bintang) -->
+                                <!-- Tombol Bintang Favorit -->
                                 <button
                                     type="button"
                                     @click="toggleFavorite(system)"
                                     :title="system.is_favorite ? 'Hapus dari favorit' : 'Tambah ke favorit'"
-                                    class="p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none"
+                                    class="p-1.5 rounded-full hover:bg-gray-100 transition-colors focus:outline-none shrink-0"
                                 >
                                     <Star 
-                                        class="w-5 h-5 transition-transform active:scale-125"
+                                        class="w-4 h-4 transition-transform active:scale-125"
                                         :class="system.is_favorite 
                                             ? 'text-amber-500 fill-amber-500' 
                                             : 'text-gray-300 hover:text-amber-400'"
@@ -703,48 +712,57 @@ onUnmounted(() => {
                                 </button>
                             </div>
 
-                            <!-- Judul & Deskripsi Sistem -->
-                            <h3 
-                                class="text-base font-bold text-content leading-snug mb-1.5"
-                                :class="{ 'text-gray-500': system.is_locked }"
-                            >
-                                {{ system.name }}
-                            </h3>
-                            <p class="text-xs text-content-muted leading-relaxed line-clamp-2 mb-4">
+                            <!-- 2. Bagian Tengah: Gambar Pratinjau Website (Screenshot / Mockup) -->
+                            <div class="mb-3.5">
+                                <div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-slate-100 border border-slate-200/80 group-hover:border-primary-ring/60 transition-all duration-300">
+                                    <img 
+                                        v-if="system.image" 
+                                        :src="system.image" 
+                                        :alt="'Pratinjau ' + system.name" 
+                                        class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                                        loading="lazy"
+                                    />
+                                    <!-- Fallback Mockup Browser jika belum ada gambar -->
+                                    <div v-else class="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col justify-between p-3">
+                                        <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
+                                            <div class="flex items-center space-x-1.5">
+                                                <div class="w-2 h-2 rounded-full bg-rose-400"></div>
+                                                <div class="w-2 h-2 rounded-full bg-amber-400"></div>
+                                                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                                            </div>
+                                            <span class="text-[9.5px] text-slate-400 font-mono truncate max-w-[150px]">
+                                                {{ system.url ? system.url.replace(/^https?:\/\//, '') : 'nkri.co.id' }}
+                                            </span>
+                                        </div>
+                                        <div class="flex-1 flex flex-col items-center justify-center text-center">
+                                            <div class="w-8 h-8 rounded-lg bg-white shadow-2xs border border-slate-200/80 flex items-center justify-center text-primary mb-1">
+                                                <component :is="getSystemIcon(system.icon)" class="w-4 h-4" />
+                                            </div>
+                                            <span class="text-[10px] font-semibold text-slate-600 truncate max-w-[180px]">{{ system.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. Deskripsi Sistem -->
+                            <p class="text-xs text-content-muted leading-relaxed line-clamp-2 mb-3">
                                 {{ system.description || 'Sistem operasional digital PT Nanggala Kencana Rekatama Indonesia.' }}
                             </p>
 
-                            <!-- login_hint bila ada -->
+                            <!-- Login Hint bila ada -->
                             <div 
                                 v-if="system.login_hint" 
-                                class="mb-4 px-3 py-2 rounded-xl bg-amber-50/70 border border-amber-200/60 flex items-start gap-2 text-[11px] text-amber-900"
+                                class="mb-3.5 px-3 py-1.5 rounded-lg bg-amber-50/70 border border-amber-200/60 flex items-start gap-1.5 text-[11px] text-amber-900"
                             >
                                 <KeyRound class="w-3.5 h-3.5 shrink-0 mt-0.5 text-amber-600" />
                                 <span class="leading-tight">{{ system.login_hint }}</span>
                             </div>
                         </div>
 
-                        <!-- Bagian Bawah Kartu: Status Hak Akses & Tombol Aksi -->
-                        <div class="pt-4 border-t border-border/70 flex items-center justify-between">
-                            
-                            <!-- JIKA SISTEM TERKUNCI (BELUM ADA AKSES) -->
-                            <template v-if="system.is_locked">
-                                <div class="flex items-center gap-1.5 text-[11.5px] font-semibold text-gray-500">
-                                    <Lock class="w-3.5 h-3.5 text-gray-400 shrink-0" />
-                                    <span>Belum ada akses, hubungi admin</span>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    disabled
-                                    class="px-4 py-2 rounded-full text-xs font-semibold bg-gray-200 text-gray-400 cursor-not-allowed inline-flex items-center gap-1"
-                                >
-                                    <span>Terkunci</span>
-                                </button>
-                            </template>
-
+                        <!-- 4. Bagian Bawah: Status & Tombol Peluncur -->
+                        <div class="pt-3.5 border-t border-border/70 flex items-center justify-between">
                             <!-- JIKA SEDANG MAINTENANCE -->
-                            <template v-else-if="system.status === 'maintenance'">
+                            <template v-if="system.status === 'maintenance'">
                                 <div class="flex items-center gap-1.5 text-[11.5px] font-semibold text-amber-700">
                                     <AlertTriangle class="w-3.5 h-3.5 text-amber-500 shrink-0" />
                                     <span>Sedang Maintenance</span>
@@ -770,13 +788,12 @@ onUnmounted(() => {
                                     :href="'/apps/' + system.slug + '/open'"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="px-5 py-2.5 rounded-full text-xs font-bold text-white bg-primary hover:bg-primary-hover shadow-xs hover:shadow-md transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-ring inline-flex items-center gap-1.5"
+                                    class="px-5 py-2 rounded-full text-xs font-bold text-white bg-primary hover:bg-primary-hover shadow-xs hover:shadow-md transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-ring inline-flex items-center gap-1.5"
                                 >
                                     <span>Buka Sistem</span>
                                     <ExternalLink class="w-3.5 h-3.5" />
                                 </a>
                             </template>
-
                         </div>
                     </div>
                 </div>

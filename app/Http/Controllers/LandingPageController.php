@@ -58,12 +58,22 @@ class LandingPageController extends Controller
         })->values();
 
         $systems = $accessibleApps->map(function (Application $app) use ($favoriteIds) {
+            $logoUrl = $app->logo 
+                ? (str_starts_with($app->logo, 'http') ? $app->logo : asset('storage/' . $app->logo)) 
+                : null;
+
+            $imageUrl = $app->image 
+                ? (str_starts_with($app->image, 'http') ? $app->image : (str_starts_with($app->image, 'images/') ? asset($app->image) : asset('storage/' . $app->image))) 
+                : null;
+
             return [
                 'id' => $app->id,
                 'name' => $app->name,
                 'slug' => $app->slug,
                 'description' => $app->description,
                 'icon' => $app->icon,
+                'logo' => $logoUrl,
+                'image' => $imageUrl,
                 'status' => $app->status,
                 'login_hint' => $app->login_hint,
                 'open_in_new_tab' => $app->open_in_new_tab,

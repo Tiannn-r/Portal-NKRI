@@ -84,6 +84,48 @@ class ApplicationResource extends Resource
                 ])
                 ->columns(2),
 
+            Forms\Components\Section::make('Visual & Media Kartu Sistem')
+                ->description('Atur logo yang tampil di samping judul dan screenshot website yang tampil di tengah kartu.')
+                ->schema([
+                    Forms\Components\FileUpload::make('logo')
+                        ->label('Logo Sistem (Tampil di Judul)')
+                        ->image()
+                        ->disk('public')
+                        ->directory('applications/logos')
+                        ->maxSize(1024)
+                        ->helperText('Format PNG/SVG/JPG, rasio kotak disarankan. Jika kosong, sistem menggunakan ikon cadangan.'),
+
+                    Forms\Components\Select::make('icon')
+                        ->label('Ikon Cadangan (Lucide)')
+                        ->options([
+                            'Users' => 'Users (SDM / Kepegawaian)',
+                            'Package' => 'Package (Logistik / Gudang)',
+                            'Receipt' => 'Receipt (Keuangan / Faktur)',
+                            'Briefcase' => 'Briefcase (CRM / Bisnis)',
+                            'LifeBuoy' => 'LifeBuoy (Bantuan / IT)',
+                            'ShoppingCart' => 'ShoppingCart (Pengadaan)',
+                            'BarChart3' => 'BarChart3 (BI / Analitik)',
+                            'FileText' => 'FileText (Dokumen / Legal)',
+                            'Clock' => 'Clock (Presensi / Waktu)',
+                            'Layers' => 'Layers (Umum)',
+                            'Cpu' => 'Cpu (Teknologi)',
+                            'Building' => 'Building (Manajemen)',
+                            'Truck' => 'Truck (Distribusi)',
+                        ])
+                        ->default('Layers')
+                        ->searchable(),
+
+                    Forms\Components\FileUpload::make('image')
+                        ->label('Gambar / Screenshot Website (Tampil di Tengah Kartu)')
+                        ->image()
+                        ->disk('public')
+                        ->directory('applications/previews')
+                        ->maxSize(2048)
+                        ->helperText('Upload tangkapan layar antarmuka sistem (rasio 16:9 disarankan). Tampil di bagian tengah kartu portal.')
+                        ->columnSpanFull(),
+                ])
+                ->columns(2),
+
             Forms\Components\Section::make('Status & Tampilan')
                 ->schema([
                     Forms\Components\Select::make('status')
@@ -114,6 +156,13 @@ class ApplicationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Preview Web')
+                    ->disk('public')
+                    ->circular(false)
+                    ->square()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Sistem')
                     ->searchable()
