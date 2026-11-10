@@ -42,10 +42,7 @@ class LandingPageController extends Controller
             ->latest()
             ->get(['id', 'title', 'body', 'created_at']);
 
-        // 3. Kategori Sistem
-        $categories = AppCategory::orderBy('sort_order')->get(['id', 'name', 'slug']);
-
-        // 4. Daftar Sistem Digital (Katalog Lengkap tanpa inactive)
+        // 3. Ambil Seluruh Sistem Digital Aktif
         $allApps = Application::with(['category', 'allowedUsers'])
             ->where('status', '!=', 'inactive')
             ->orderBy('sort_order')
@@ -55,9 +52,12 @@ class LandingPageController extends Controller
             ? $user->favoriteApplications()->pluck('applications.id')->toArray()
             : [];
 
-        $systems = $allApps->map(function (Application $app) use ($user, $favoriteIds) {
-            $canAccess = $user ? $this->accessResolver->canAccess($user, $app) : false;
+        // 4. Filter Otorisasi: HANYA sistem yang diberi hak akses yang dikirim & ditampilkan ke pengguna
+        $accessibleApps = $allApps->filter(function (Application $app) use ($user) {
+            return $user ? $this->accessResolver->canAccess($user, $app) : false;
+        })->values();
 
+        $systems = $accessibleApps->map(function (Application $app) use ($favoriteIds) {
             return [
                 'id' => $app->id,
                 'name' => $app->name,
@@ -72,15 +72,21 @@ class LandingPageController extends Controller
                     'name' => $app->category->name,
                     'slug' => $app->category->slug,
                 ] : null,
-                'can_access' => $canAccess,
-                'is_locked' => !$canAccess,
+                'can_access' => true,
+                'is_locked' => false,
                 'is_favorite' => in_array($app->id, $favoriteIds),
             ];
         });
 
-        // 5. Statistik Nyata: Jumlah sistem yang tersedia bagi user
-        $accessibleCount = $systems->where('can_access', true)->count();
-        $totalActiveCount = $systems->count();
+        // 5. Kategori Sistem: Hanya tampilkan kategori yang memiliki sistem berizin bagi pengguna
+        $accessibleCategoryIds = $accessibleApps->pluck('app_category_id')->unique()->filter();
+        $categories = AppCategory::whereIn('id', $accessibleCategoryIds)
+            ->orderBy('sort_order')
+            ->get(['id', 'name', 'slug']);
+
+        // 6. Statistik: Jumlah sistem yang tersedia bagi pengguna
+        $accessibleCount = $systems->count();
+        $totalActiveCount = $allApps->count();
 
         return Inertia::render('Welcome', [
             'auth' => [

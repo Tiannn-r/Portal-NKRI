@@ -781,22 +781,33 @@ onUnmounted(() => {
                     </div>
                 </div>
 
-                <!-- Empty State Jika Filter Pencarian Tidak Ditemukan -->
+                <!-- Empty State Jika Tidak Ada Sistem atau Filter Pencarian Tidak Ditemukan -->
                 <div v-else class="text-center py-16 bg-white rounded-3xl border border-dashed border-border p-8">
-                    <div class="w-12 h-12 rounded-2xl bg-gray-100 text-content-subtle flex items-center justify-center mx-auto mb-3">
-                        <Search class="w-6 h-6" />
-                    </div>
-                    <h3 class="text-base font-bold text-content">Tidak ada sistem yang cocok</h3>
-                    <p class="text-xs text-content-subtle mt-1 max-w-sm mx-auto">
-                        Coba periksa kata kunci pencarian Anda atau kembalikan filter ke kategori "Semua Sistem".
-                    </p>
-                    <button
-                        type="button"
-                        @click="searchQuery = ''; selectedCategory = 'all'; showOnlyFavorites = false"
-                        class="mt-4 px-4 py-2 rounded-full text-xs font-semibold text-primary bg-primary-soft hover:bg-primary hover:text-white transition-colors"
-                    >
-                        Reset Filter
-                    </button>
+                    <template v-if="systems.length === 0">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                            <Lock class="w-6 h-6" />
+                        </div>
+                        <h3 class="text-base font-bold text-content">Belum Ada Sistem yang Diberikan Akses</h3>
+                        <p class="text-xs text-content-subtle mt-1 max-w-sm mx-auto">
+                            Akun Anda belum memiliki izin akses ke sistem digital internal. Silakan hubungi Administrator melalui CMS Admin untuk menambahkan akses sistem.
+                        </p>
+                    </template>
+                    <template v-else>
+                        <div class="w-12 h-12 rounded-2xl bg-gray-100 text-content-subtle flex items-center justify-center mx-auto mb-3">
+                            <Search class="w-6 h-6" />
+                        </div>
+                        <h3 class="text-base font-bold text-content">Tidak ada sistem yang cocok</h3>
+                        <p class="text-xs text-content-subtle mt-1 max-w-sm mx-auto">
+                            Coba periksa kata kunci pencarian Anda atau kembalikan filter ke kategori "Semua Sistem".
+                        </p>
+                        <button
+                            type="button"
+                            @click="searchQuery = ''; selectedCategory = 'all'; showOnlyFavorites = false"
+                            class="mt-4 px-4 py-2 rounded-full text-xs font-semibold text-primary bg-primary-soft hover:bg-primary hover:text-white transition-colors"
+                        >
+                            Reset Filter
+                        </button>
+                    </template>
                 </div>
 
             </div>
