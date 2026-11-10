@@ -568,9 +568,10 @@ onUnmounted(() => {
                         <h3 class="text-sm font-bold text-content mb-1.5 leading-snug">
                             {{ item.title }}
                         </h3>
-                        <p class="text-xs text-content-muted leading-relaxed whitespace-pre-line">
-                            {{ item.body }}
-                        </p>
+                        <div 
+                            class="text-xs text-content-muted leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline"
+                            v-html="item.body"
+                        ></div>
                     </div>
                 </div>
             </div>
