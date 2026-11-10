@@ -40,13 +40,6 @@ class UserResource extends Resource
                         ->unique(ignoreRecord: true)
                         ->maxLength(255),
 
-                    Forms\Components\Select::make('department_id')
-                        ->label('Departemen')
-                        ->relationship('department', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->nullable(),
-
                     Forms\Components\Toggle::make('is_active')
                         ->label('Akun Aktif')
                         ->default(true)
@@ -67,14 +60,15 @@ class UserResource extends Resource
                         ->helperText('Kosongkan jika tidak ingin mengganti kata sandi.'),
                 ]),
 
-            Forms\Components\Section::make('Role & Hak Akses')
+            Forms\Components\Section::make('Hak Akses Sistem Digital')
+                ->description('Tentukan sistem digital apa saja yang boleh diakses dan diluncurkan oleh karyawan ini.')
                 ->schema([
-                    Forms\Components\Select::make('roles')
-                        ->label('Role Pengguna')
-                        ->relationship('roles', 'name')
-                        ->multiple()
-                        ->preload()
-                        ->helperText('Pilih satu atau lebih role yang diberikan ke pengguna ini.'),
+                    Forms\Components\CheckboxList::make('applications')
+                        ->label('Daftar Sistem yang Diberikan Izin')
+                        ->relationship('applications', 'name')
+                        ->columns(2)
+                        ->bulkToggleable()
+                        ->helperText('Centang sistem yang diizinkan untuk dibuka oleh pengguna ini.'),
                 ]),
         ]);
     }
@@ -94,21 +88,12 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('department.name')
-                    ->label('Departemen')
+                Tables\Columns\TextColumn::make('applications_count')
+                    ->label('Sistem Berizin')
+                    ->counts('applications')
                     ->badge()
-                    ->color('gray')
+                    ->color('primary')
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('roles.name')
-                    ->label('Role')
-                    ->badge()
-                    ->colors([
-                        'danger'  => 'Super Admin',
-                        'warning' => 'Admin Sistem',
-                        'info'    => 'Admin Konten',
-                        'gray'    => 'User',
-                    ]),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')

@@ -88,12 +88,12 @@ class PerformanceQueryTest extends TestCase
         $queries = DB::getQueryLog();
         $queryCount = count($queries);
 
-        // Tetap harus konstan (13 query) meskipun jumlah aplikasi bertambah banyak
+        // Tetap harus konstan (11 query) meskipun jumlah aplikasi bertambah banyak
         $this->assertLessThanOrEqual(
             15,
             $queryCount,
             "Penambahan aplikasi menyebabkan peningkatan jumlah query linear! Query count: {$queryCount}"
         );
-        $this->assertEquals(13, $queryCount);
+        $this->assertEquals(11, $queryCount);
     }
 }

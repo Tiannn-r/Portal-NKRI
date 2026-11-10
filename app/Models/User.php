@@ -62,6 +62,16 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
+     * Relasi langsung ke Sistem Digital yang diizinkan untuk diakses pengguna.
+     */
+    public function applications(): BelongsToMany
+    {
+        return $this->belongsToMany(Application::class, 'application_user')
+            ->withPivotValue('type', 'allow')
+            ->withTimestamps();
+    }
+
+    /**
      * Relasi ke Departemen pengguna.
      */
     public function department(): BelongsTo

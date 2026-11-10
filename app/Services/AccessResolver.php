@@ -18,13 +18,10 @@ class AccessResolver
      * Evaluasi apakah seorang pengguna memiliki izin untuk mengakses sebuah aplikasi.
      *
      * Aturan Inti:
-     * 1. Super Admin boleh semua sistem.
-     * 2. Pengecualian application_user dengan type = 'deny' SELALU mengalahkan aturan lain (Deny Wins).
-     * 3. Izin diberikan jika:
-     *    - Ada pengecualian application_user dengan type = 'allow', ATAU
-     *    - User memiliki minimal satu Role yang terhubung ke aplikasi, ATAU
-     *    - Departemen user terhubung ke aplikasi.
-     * 4. Sistem berstatus 'inactive' tidak boleh diakses oleh user biasa.
+     * 1. Super Admin berhak mengakses semua sistem aktif.
+     * 2. Sistem berstatus 'inactive' tidak boleh diakses oleh pengguna biasa.
+     * 3. Pengguna memiliki akses jika terdaftar langsung pada sistem terkait (application_user / allowedUsers).
+     * 4. Otorisasi kini langsung ditentukan per sistem (data sistem), bukan berdasarkan role atau departemen.
      */
     public function canAccess(User $user, Application $application): bool
     {
@@ -38,43 +35,12 @@ class AccessResolver
             return true;
         }
 
-        // Load relasi pengecualian user jika belum di-load
-        $userException = $application->userExceptions
-            ? $application->userExceptions->firstWhere('id', $user->id)
-            : $application->userExceptions()->where('users.id', $user->id)->first();
+        // Cek izin langsung User <-> Sistem (data sistem)
+        $hasDirectAccess = $application->relationLoaded('allowedUsers')
+            ? $application->allowedUsers->contains('id', $user->id)
+            : $application->allowedUsers()->where('users.id', $user->id)->exists();
 
-        // Aturan 3: Deny Wins - jika ada deny khusus, langsung tolak mutlak
-        if ($userException && $userException->pivot->type === 'deny') {
-            return false;
-        }
-
-        // Aturan 2a: Jika ada allow khusus perorangan
-        if ($userException && $userException->pivot->type === 'allow') {
-            return true;
-        }
-
-        // Aturan 2b: Cek apakah role user terhubung ke aplikasi
-        $userRoleNames = $user->getRoleNames()->toArray();
-        $hasMatchingRole = $application->roles
-            ? $application->roles->contains(fn ($role) => in_array($role->name, $userRoleNames))
-            : $application->roles()->whereIn('name', $userRoleNames)->exists();
-
-        if ($hasMatchingRole) {
-            return true;
-        }
-
-        // Aturan 2c: Cek apakah departemen user terhubung ke aplikasi
-        if ($user->department_id) {
-            $hasMatchingDept = $application->departments
-                ? $application->departments->contains('id', $user->department_id)
-                : $application->departments()->where('departments.id', $user->department_id)->exists();
-
-            if ($hasMatchingDept) {
-                return true;
-            }
-        }
-
-        return false;
+        return $hasDirectAccess;
     }
 
     /**
@@ -95,8 +61,8 @@ class AccessResolver
                     ->get();
             }
 
-            // Ambil semua aplikasi non-inactive beserta relasi hak aksesnya
-            $apps = Application::with(['category', 'roles', 'departments', 'userExceptions'])
+            // Ambil semua aplikasi non-inactive beserta relasi pengguna berizin
+            $apps = Application::with(['category', 'allowedUsers'])
                 ->where('status', '!=', 'inactive')
                 ->orderBy('sort_order')
                 ->get();
@@ -115,7 +81,7 @@ class AccessResolver
      */
     public function getCatalogApps(User $user): Collection
     {
-        $apps = Application::with(['category', 'roles', 'departments', 'userExceptions'])
+        $apps = Application::with(['category', 'allowedUsers'])
             ->where('status', '!=', 'inactive')
             ->orderBy('sort_order')
             ->get();

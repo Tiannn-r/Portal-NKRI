@@ -23,3 +23,4 @@ class EditRole extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 }
+

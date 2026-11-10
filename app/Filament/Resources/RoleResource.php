@@ -16,6 +16,8 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     protected static ?string $navigationLabel = 'Role Pengguna';
     protected static ?string $modelLabel = 'Role Pengguna';
@@ -128,3 +130,4 @@ class RoleResource extends Resource
         ];
     }
 }
+

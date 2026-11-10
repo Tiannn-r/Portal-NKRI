@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Application;
 use App\Models\User;
+use App\Services\AccessResolver;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -16,8 +17,8 @@ class ManageUserAccess extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
-    protected static ?string $navigationLabel = 'Atur Tampilan Sistem';
-    protected static ?string $title = 'Pengaturan Penampilan Sistem Per Pengguna';
+    protected static ?string $navigationLabel = 'Atur Akses Pengguna';
+    protected static ?string $title = 'Matriks Hak Akses Sistem Per Pengguna';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
     protected static ?int $navigationSort = 2;
 
@@ -30,7 +31,6 @@ class ManageUserAccess extends Page implements HasForms
         $this->form->fill([
             'user_id' => null,
             'allowed_apps' => [],
-            'denied_apps' => [],
         ]);
     }
 
@@ -39,16 +39,15 @@ class ManageUserAccess extends Page implements HasForms
         return $form
             ->schema([
                 Forms\Components\Section::make('Pilih Pengguna')
-                    ->description('Pilih karyawan yang ingin Anda atur daftar sistem digitalnya.')
+                    ->description('Pilih karyawan yang ingin Anda atur izin akses sistemnya.')
                     ->schema([
                         Forms\Components\Select::make('user_id')
                             ->label('Nama Karyawan / Pengguna')
                             ->options(
-                                User::with('department')
-                                    ->orderBy('name')
+                                User::orderBy('name')
                                     ->get()
                                     ->mapWithKeys(fn (User $user) => [
-                                        $user->id => "{$user->name} ({$user->email}) - " . ($user->department?->name ?? 'Lintas Departemen'),
+                                        $user->id => "{$user->name} ({$user->email})",
                                     ])
                             )
                             ->searchable()
@@ -57,39 +56,30 @@ class ManageUserAccess extends Page implements HasForms
                             ->afterStateUpdated(function ($state, Forms\Set $set) {
                                 if (!$state) {
                                     $set('allowed_apps', []);
-                                    $set('denied_apps', []);
                                     return;
                                 }
 
-                                $user = User::with('applicationExceptions')->find($state);
+                                $user = User::with('applications')->find($state);
                                 if (!$user) {
                                     return;
                                 }
 
-                                $allowed = $user->applicationExceptions
-                                    ->where('pivot.type', 'allow')
-                                    ->pluck('id')
-                                    ->map(fn ($id) => (string) $id)
-                                    ->toArray();
-
-                                $denied = $user->applicationExceptions
-                                    ->where('pivot.type', 'deny')
+                                $allowed = $user->applications
                                     ->pluck('id')
                                     ->map(fn ($id) => (string) $id)
                                     ->toArray();
 
                                 $set('allowed_apps', $allowed);
-                                $set('denied_apps', $denied);
                             })
                             ->columnSpanFull(),
                     ]),
 
-                Forms\Components\Section::make('Pengaturan Tampilan Sistem Digital')
-                    ->description('Tentukan sistem mana saja yang ditampilkan atau disembunyikan secara khusus untuk pengguna yang dipilih.')
+                Forms\Components\Section::make('Hak Akses Sistem Digital')
+                    ->description('Centang sistem-sistem apa saja yang diizinkan untuk dibuka oleh pengguna yang dipilih.')
                     ->visible(fn (Forms\Get $get) => filled($get('user_id')))
                     ->schema([
                         Forms\Components\CheckboxList::make('allowed_apps')
-                            ->label('Sistem yang DITAMPILKAN (Diberi Izin Khusus)')
+                            ->label('Daftar Sistem yang Diberi Akses')
                             ->options(
                                 Application::with('category')
                                     ->where('status', '!=', 'inactive')
@@ -100,22 +90,7 @@ class ManageUserAccess extends Page implements HasForms
                                     ])
                             )
                             ->columns(2)
-                            ->helperText('Sistem yang dicentang di sini akan SELALU muncul di portal karyawan ini.')
-                            ->bulkToggleable(),
-
-                        Forms\Components\CheckboxList::make('denied_apps')
-                            ->label('Sistem yang DISEMBUNYIKAN / DIBLOKIR (Deny Wins)')
-                            ->options(
-                                Application::with('category')
-                                    ->where('status', '!=', 'inactive')
-                                    ->orderBy('sort_order')
-                                    ->get()
-                                    ->mapWithKeys(fn (Application $app) => [
-                                        $app->id => "{$app->name} [" . ($app->category?->name ?? 'Umum') . "]",
-                                    ])
-                            )
-                            ->columns(2)
-                            ->helperText('Sistem yang dicentang di sini akan SELALU disembunyikan dari karyawan ini meskipun divisinya memiliki akses.')
+                            ->helperText('Sistem yang dicentang akan dapat dilihat dan diluncurkan oleh karyawan ini di portal.')
                             ->bulkToggleable(),
                     ]),
             ])
@@ -141,33 +116,16 @@ class ManageUserAccess extends Page implements HasForms
         }
 
         $allowed = $state['allowed_apps'] ?? [];
-        $denied = $state['denied_apps'] ?? [];
 
-        // Hapus konfigurasi lama
-        $user->applicationExceptions()->detach();
+        // Simpan sistem yang diizinkan
+        $user->applications()->sync($allowed);
 
-        // Simpan izin khusus (allow)
-        foreach ($allowed as $appId) {
-            // Jika ada di denied, prioritas deny
-            if (!in_array($appId, $denied)) {
-                $user->applicationExceptions()->attach($appId, [
-                    'type' => 'allow',
-                    'notes' => 'Diatur via menu Atur Tampilan Sistem CMS',
-                ]);
-            }
-        }
-
-        // Simpan blokir khusus (deny)
-        foreach ($denied as $appId) {
-            $user->applicationExceptions()->attach($appId, [
-                'type' => 'deny',
-                'notes' => 'Diblokir via menu Atur Tampilan Sistem CMS',
-            ]);
-        }
+        // Invalidate cache
+        app(AccessResolver::class)->invalidateUserCache($user->id);
 
         Notification::make()
             ->title('Pengaturan Berhasil Disimpan')
-            ->body("Daftar penampilan sistem untuk {$user->name} berhasil diperbarui.")
+            ->body("Hak akses sistem untuk {$user->name} berhasil diperbarui.")
             ->success()
             ->send();
     }

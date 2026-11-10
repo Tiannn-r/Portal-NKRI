@@ -436,7 +436,7 @@ onUnmounted(() => {
                                     {{ auth.user.name }}
                                 </span>
                                 <span class="block text-[10.5px] text-content-subtle truncate mt-0.5">
-                                    {{ auth.user.department || 'PT NKRI' }}
+                                    {{ auth.user.email }}
                                 </span>
                             </div>
                         </button>
@@ -452,7 +452,7 @@ onUnmounted(() => {
                                 <p class="text-[11px] text-content-subtle truncate mt-0.5">{{ auth.user.email }}</p>
                                 <div class="mt-2 flex flex-wrap gap-1">
                                     <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary-soft text-primary border border-primary-ring/40">
-                                        {{ auth.user.department }}
+                                        Karyawan Terdaftar
                                     </span>
                                 </div>
                             </div>

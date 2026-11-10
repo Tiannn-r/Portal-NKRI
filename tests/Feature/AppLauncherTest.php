@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\AppCategory;
 use App\Models\Application;
-use App\Models\Department;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -37,13 +36,9 @@ class AppLauncherTest extends TestCase
 
     public function test_user_with_access_is_redirected_to_external_url_and_logged(): void
     {
-        $dept = Department::create(['name' => 'Teknologi Informasi', 'code' => 'IT']);
-
         $user = User::factory()->create([
-            'department_id' => $dept->id,
             'is_active' => true,
         ]);
-        $user->assignRole('User');
 
         $app = Application::create([
             'name' => 'IT Helpdesk',
@@ -53,7 +48,8 @@ class AppLauncherTest extends TestCase
             'status' => 'active',
         ]);
 
-        $app->departments()->attach($dept->id);
+        // Hubungkan akses langsung user ke sistem
+        $app->allowedUsers()->attach($user->id);
 
         $response = $this->actingAs($user)->get("/apps/{$app->slug}/open");
 
@@ -70,7 +66,6 @@ class AppLauncherTest extends TestCase
     public function test_unauthorized_user_receives_403_forbidden(): void
     {
         $user = User::factory()->create(['is_active' => true]);
-        $user->assignRole('User');
 
         $app = Application::create([
             'name' => 'Sistem Payroll Internal',
@@ -91,45 +86,11 @@ class AppLauncherTest extends TestCase
         ]);
     }
 
-    public function test_user_with_deny_override_receives_403_even_with_department_access(): void
-    {
-        $dept = Department::create(['name' => 'Divisi Finansial', 'code' => 'FIN']);
-
-        $user = User::factory()->create([
-            'department_id' => $dept->id,
-            'is_active' => true,
-        ]);
-        $user->assignRole('User');
-
-        $app = Application::create([
-            'name' => 'Sistem Pembelian Aset',
-            'slug' => 'sistem-pembelian-aset',
-            'url' => 'https://procurement.nkri.co.id',
-            'app_category_id' => $this->category->id,
-            'status' => 'active',
-        ]);
-
-        // Hubungkan departemen
-        $app->departments()->attach($dept->id);
-
-        // Pasang deny override khusus user
-        $app->userExceptions()->attach($user->id, ['type' => 'deny']);
-
-        $response = $this->actingAs($user)->get("/apps/{$app->slug}/open");
-
-        // Wajib ditolak 403 (Deny Wins)
-        $response->assertStatus(403);
-    }
-
     public function test_maintenance_system_redirects_back_with_notification(): void
     {
-        $dept = Department::create(['name' => 'Divisi Umum', 'code' => 'UMUM']);
-
         $user = User::factory()->create([
-            'department_id' => $dept->id,
             'is_active' => true,
         ]);
-        $user->assignRole('User');
 
         $app = Application::create([
             'name' => 'Aplikasi Presensi GPS',
@@ -139,7 +100,7 @@ class AppLauncherTest extends TestCase
             'status' => 'maintenance',
         ]);
 
-        $app->departments()->attach($dept->id);
+        $app->allowedUsers()->attach($user->id);
 
         $response = $this->actingAs($user)
             ->from('/dashboard')

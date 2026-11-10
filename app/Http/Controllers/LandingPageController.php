@@ -46,7 +46,7 @@ class LandingPageController extends Controller
         $categories = AppCategory::orderBy('sort_order')->get(['id', 'name', 'slug']);
 
         // 4. Daftar Sistem Digital (Katalog Lengkap tanpa inactive)
-        $allApps = Application::with(['category', 'roles', 'departments', 'userExceptions'])
+        $allApps = Application::with(['category', 'allowedUsers'])
             ->where('status', '!=', 'inactive')
             ->orderBy('sort_order')
             ->get();

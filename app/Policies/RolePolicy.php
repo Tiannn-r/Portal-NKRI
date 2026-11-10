@@ -57,3 +57,4 @@ class RolePolicy
         return $user->hasRole('Super Admin');
     }
 }
+

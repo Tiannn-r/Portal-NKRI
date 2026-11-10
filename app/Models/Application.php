@@ -78,6 +78,16 @@ class Application extends Model
     }
 
     /**
+     * Relasi langsung ke Pengguna yang memiliki izin akses ke sistem ini.
+     */
+    public function allowedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'application_user')
+            ->withPivotValue('type', 'allow')
+            ->withTimestamps();
+    }
+
+    /**
      * Relasi ke Roles yang berhak mengakses aplikasi ini.
      */
     public function roles(): BelongsToMany

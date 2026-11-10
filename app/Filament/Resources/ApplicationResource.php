@@ -107,6 +107,18 @@ class ApplicationResource extends Resource
                         ->default(true),
                 ])
                 ->columns(3),
+
+            Forms\Components\Section::make('Hak Akses Pengguna')
+                ->description('Tentukan karyawan / pengguna yang berhak mengakses dan meluncurkan sistem ini.')
+                ->schema([
+                    Forms\Components\Select::make('allowedUsers')
+                        ->label('Pengguna yang Diberi Akses')
+                        ->relationship('allowedUsers', 'name')
+                        ->multiple()
+                        ->preload()
+                        ->searchable()
+                        ->helperText('Pilih karyawan yang memiliki hak akses untuk membuka sistem ini di portal.'),
+                ]),
         ]);
     }
 
@@ -190,9 +202,7 @@ class ApplicationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\RolesRelationManager::class,
-            RelationManagers\DepartmentsRelationManager::class,
-            RelationManagers\UserExceptionsRelationManager::class,
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 
