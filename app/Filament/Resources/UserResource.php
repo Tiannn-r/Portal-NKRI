@@ -59,17 +59,6 @@ class UserResource extends Resource
                         ->minLength(8)
                         ->helperText('Kosongkan jika tidak ingin mengganti kata sandi.'),
                 ]),
-
-            Forms\Components\Section::make('Hak Akses Sistem Digital')
-                ->description('Tentukan sistem digital apa saja yang boleh diakses dan diluncurkan oleh karyawan ini.')
-                ->schema([
-                    Forms\Components\CheckboxList::make('applications')
-                        ->label('Daftar Sistem yang Diberikan Izin')
-                        ->relationship('applications', 'name')
-                        ->columns(2)
-                        ->bulkToggleable()
-                        ->helperText('Centang sistem yang diizinkan untuk dibuka oleh pengguna ini.'),
-                ]),
         ]);
     }
 
@@ -88,13 +77,6 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('applications_count')
-                    ->label('Sistem Berizin')
-                    ->counts('applications')
-                    ->badge()
-                    ->color('primary')
-                    ->sortable(),
-
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean()
@@ -108,10 +90,6 @@ class UserResource extends Resource
             ])
             ->defaultSort('name')
             ->filters([
-                Tables\Filters\SelectFilter::make('department_id')
-                    ->label('Departemen')
-                    ->relationship('department', 'name'),
-
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Status Akun')
                     ->trueLabel('Aktif')

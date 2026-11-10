@@ -18,7 +18,7 @@ class ManageUserAccess extends Page implements HasForms
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
     protected static ?string $navigationLabel = 'Atur Akses Pengguna';
-    protected static ?string $title = 'Matriks Hak Akses Sistem Per Pengguna';
+    protected static ?string $title = 'Atur Hak Akses Pengguna';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
     protected static ?int $navigationSort = 2;
 
@@ -78,6 +78,18 @@ class ManageUserAccess extends Page implements HasForms
                     ->description('Centang sistem-sistem apa saja yang diizinkan untuk dibuka oleh pengguna yang dipilih.')
                     ->visible(fn (Forms\Get $get) => filled($get('user_id')))
                     ->schema([
+                        Forms\Components\Placeholder::make('super_admin_notice')
+                            ->label('Status Akses Khusus')
+                            ->content('Pengguna ini adalah Super Administrator. Super Admin secara otomatis memiliki izin akses penuh ke seluruh sistem digital internal.')
+                            ->visible(function (Forms\Get $get) {
+                                $userId = $get('user_id');
+                                if (!$userId) {
+                                    return false;
+                                }
+                                $user = User::find($userId);
+                                return $user && $user->hasRole('Super Admin');
+                            }),
+
                         Forms\Components\CheckboxList::make('allowed_apps')
                             ->label('Daftar Sistem yang Diberi Akses')
                             ->options(
