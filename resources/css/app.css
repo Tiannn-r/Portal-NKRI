@@ -30,12 +30,12 @@ body {
 }
 
 /* ==========================================================================
-   Animasi Halus & Elegan (Simple, Smooth, Subtle, High Performance)
+   Animasi Halus & Elegan (Tenang, Berwibawa & Tidak Terburu-buru)
    ========================================================================== */
 @keyframes cardEntrance {
     0% {
         opacity: 0;
-        transform: translateY(16px) scale(0.985);
+        transform: translateY(20px) scale(0.98);
     }
     100% {
         opacity: 1;
@@ -46,7 +46,7 @@ body {
 @keyframes textEntrance {
     0% {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(12px);
     }
     100% {
         opacity: 1;
@@ -55,23 +55,23 @@ body {
 }
 
 .animate-card-enter {
-    animation: cardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: cardEntrance 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-text-enter {
-    animation: textEntrance 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: textEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* ==========================================================================
-   Scroll-Reveal Card Animation (Mulus Muncul Saat Di-scroll ke Bawah)
+   Scroll-Reveal Card Animation (Mulus, Tenang & Berkelas Saat Di-scroll)
    ========================================================================== */
 .reveal-card {
     opacity: 0;
-    transform: translateY(28px) scale(0.985);
-    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.2s ease,
-                border-color 0.2s ease;
+    transform: translateY(32px) scale(0.98);
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), 
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
     will-change: opacity, transform;
 }
 

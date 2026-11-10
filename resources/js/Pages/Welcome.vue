@@ -183,8 +183,8 @@ const vReveal = {
                 });
             },
             {
-                threshold: 0.1,
-                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.08,
+                rootMargin: '0px 0px -20px 0px',
             }
         );
 
@@ -511,7 +511,7 @@ onUnmounted(() => {
                 </h1>
 
                 <!-- Deskripsi Hero dari Pengaturan Portal -->
-                <p class="animate-text-enter max-w-2xl mx-auto text-sm sm:text-base text-content-muted leading-relaxed" style="animation-delay: 90ms;">
+                <p class="animate-text-enter max-w-2xl mx-auto text-sm sm:text-base text-content-muted leading-relaxed" style="animation-delay: 160ms;">
                     {{ settings.hero_description || 'Penyimpan seluruh sistem yang dibuat untuk PT NKRI' }}
                 </p>
 
@@ -558,7 +558,7 @@ onUnmounted(() => {
                     <div
                         v-for="(item, idx) in announcements"
                         :key="item.id"
-                        v-reveal="idx * 80"
+                        v-reveal="idx * 130"
                         class="reveal-card p-5 rounded-2xl bg-white border border-border hover:border-primary-ring shadow-xs hover:shadow-sm"
                     >
                         <div class="flex items-center gap-2 text-[11px] font-semibold text-content-subtle mb-2">
@@ -662,7 +662,7 @@ onUnmounted(() => {
                     <div
                         v-for="(system, index) in filteredSystems"
                         :key="system.id + '-' + selectedCategory"
-                        v-reveal="(index % 3) * 80"
+                        v-reveal="(index % 3) * 130"
                         class="reveal-card relative rounded-2xl p-6 flex flex-col justify-between border"
                         :class="system.is_locked 
                             ? 'bg-[#F9FAFB]/90 border-dashed border-gray-300 opacity-70' 
