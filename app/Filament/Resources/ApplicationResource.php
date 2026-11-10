@@ -92,7 +92,9 @@ class ApplicationResource extends Resource
                         ->image()
                         ->disk('public')
                         ->directory('applications/logos')
-                        ->maxSize(1024)
+                        ->visibility('public')
+                        ->fetchFileInformation(false)
+                        ->maxSize(2048)
                         ->helperText('Format PNG/SVG/JPG, rasio kotak disarankan. Jika kosong, sistem menggunakan ikon cadangan.'),
 
                     Forms\Components\Select::make('icon')
@@ -120,7 +122,9 @@ class ApplicationResource extends Resource
                         ->image()
                         ->disk('public')
                         ->directory('applications/previews')
-                        ->maxSize(2048)
+                        ->visibility('public')
+                        ->fetchFileInformation(false)
+                        ->maxSize(5120)
                         ->helperText('Upload tangkapan layar antarmuka sistem (rasio 16:9 disarankan). Tampil di bagian tengah kartu portal.')
                         ->columnSpanFull(),
                 ])
