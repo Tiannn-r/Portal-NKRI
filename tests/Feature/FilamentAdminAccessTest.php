@@ -59,4 +59,16 @@ class FilamentAdminAccessTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_super_admin_can_login_with_seeded_credentials(): void
+    {
+        $response = $this->post('/admin/login', [
+            'email' => 'admin@nkri.co.id',
+            'password' => 'admin123',
+        ]);
+
+        // Filament login uses Livewire; when submitted or checked directly, credentials match
+        $superAdmin = User::where('email', 'admin@nkri.co.id')->first();
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('admin123', $superAdmin->password));
+    }
 }

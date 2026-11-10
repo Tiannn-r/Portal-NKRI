@@ -16,7 +16,7 @@ class SuperAdminSeeder extends Seeder
     {
         $name = env('SUPER_ADMIN_NAME', 'Super Administrator');
         $email = env('SUPER_ADMIN_EMAIL', 'admin@nkri.co.id');
-        $password = env('SUPER_ADMIN_PASSWORD', 'PortalPassword123!');
+        $password = env('SUPER_ADMIN_PASSWORD', 'admin123');
 
         $itDept = Department::where('code', 'IT')->first();
 
