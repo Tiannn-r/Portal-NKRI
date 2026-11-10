@@ -592,9 +592,6 @@ onUnmounted(() => {
                         <h2 class="mt-2.5 text-2xl sm:text-3xl font-extrabold text-content tracking-tight">
                             Daftar Seluruh Sistem Digital
                         </h2>
-                        <p class="text-xs sm:text-sm text-content-muted mt-1">
-                            Pilih sistem yang ingin Anda luncurkan. Sistem yang belum berizin berstatus terkunci.
-                        </p>
                     </div>
 
                     <!-- Search Input Realtime -->
