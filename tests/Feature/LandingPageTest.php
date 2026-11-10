@@ -82,5 +82,26 @@ class LandingPageTest extends TestCase
         $response = $this->postJson("/apps/{$app->id}/favorite");
         $response->assertStatus(401);
     }
+
+    public function test_category_with_applications_can_be_deleted_smoothly(): void
+    {
+        $category = AppCategory::has('applications')->first();
+        $this->assertNotNull($category);
+
+        $appIds = $category->applications()->pluck('id')->toArray();
+        $this->assertNotEmpty($appIds);
+
+        // Hapus kategori
+        $category->delete();
+
+        $this->assertDatabaseMissing('app_categories', ['id' => $category->id]);
+
+        // Aplikasi tetap ada dengan app_category_id menjadi null
+        foreach ($appIds as $appId) {
+            $app = Application::find($appId);
+            $this->assertNotNull($app);
+            $this->assertNull($app->app_category_id);
+        }
+    }
 }
 

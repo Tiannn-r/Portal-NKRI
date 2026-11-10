@@ -82,11 +82,15 @@ class AppCategoryResource extends Resource
             ->reorderable('sort_order')
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading('Hapus Kategori')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus kategori ini? Sistem di dalam kategori ini tidak akan terhapus, melainkan dialihkan ke kategori umum.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->modalHeading('Hapus Kategori Terpilih')
+                        ->modalDescription('Apakah Anda yakin ingin menghapus kategori terpilih? Sistem terkait akan dialihkan ke kategori umum.'),
                 ]),
             ]);
     }

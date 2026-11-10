@@ -63,7 +63,8 @@ class ApplicationResource extends Resource
                     Forms\Components\Select::make('app_category_id')
                         ->label('Kategori')
                         ->relationship('category', 'name')
-                        ->required()
+                        ->nullable()
+                        ->placeholder('Pilih Kategori (Opsional)')
                         ->searchable()
                         ->preload(),
 

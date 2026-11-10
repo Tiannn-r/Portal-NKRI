@@ -13,7 +13,9 @@ class EditAppCategory extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->modalHeading('Hapus Kategori')
+                ->modalDescription('Apakah Anda yakin ingin menghapus kategori ini? Sistem di dalam kategori ini tidak akan terhapus, melainkan dialihkan ke kategori umum.'),
         ];
     }
 }
