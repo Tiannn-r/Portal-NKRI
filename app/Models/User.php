@@ -17,6 +17,11 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory, Notifiable, HasRoles;
 
     /**
+     * Spatie Permission Guard Name
+     */
+    protected string $guard_name = 'web';
+
+    /**
      * Memastikan hanya role Super Admin yang aktif yang diperkenankan masuk ke panel CMS.
      */
     public function canAccessPanel(Panel $panel): bool

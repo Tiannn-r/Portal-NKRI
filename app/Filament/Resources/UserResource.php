@@ -59,6 +59,19 @@ class UserResource extends Resource
                         ->minLength(8)
                         ->helperText('Kosongkan jika tidak ingin mengganti kata sandi.'),
                 ]),
+
+            Forms\Components\Section::make('Hak Akses Administrator')
+                ->description('Tentukan apakah pengguna ini memiliki hak untuk masuk dan mengelola CMS Admin.')
+                ->schema([
+                    Forms\Components\Toggle::make('is_admin')
+                        ->label('Beri Akses ke Panel Admin (Super Admin)')
+                        ->helperText('Jika diaktifkan, pengguna ini dapat login ke /admin dan mengelola sistem, pengguna, serta pengaturan portal.')
+                        ->default(false)
+                        ->disabled(fn (?User $record) => $record && $record->id === auth()->id())
+                        ->afterStateHydrated(function (Forms\Components\Toggle $component, ?User $record) {
+                            $component->state($record ? $record->hasRole('Super Admin') : false);
+                        }),
+                ]),
         ]);
     }
 
@@ -77,6 +90,12 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
 
+                Tables\Columns\TextColumn::make('is_admin')
+                    ->label('Akses Admin')
+                    ->state(fn (User $record) => $record->hasRole('Super Admin') ? 'Super Admin' : 'Pengguna Biasa')
+                    ->badge()
+                    ->color(fn (string $state) => $state === 'Super Admin' ? 'danger' : 'gray'),
+
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean()
@@ -90,6 +109,16 @@ class UserResource extends Resource
             ])
             ->defaultSort('name')
             ->filters([
+                Tables\Filters\TernaryFilter::make('is_admin')
+                    ->label('Tipe Akses')
+                    ->placeholder('Semua Pengguna')
+                    ->trueLabel('Hanya Super Admin')
+                    ->falseLabel('Hanya Pengguna Biasa')
+                    ->queries(
+                        true: fn ($query) => $query->whereHas('roles', fn ($q) => $q->where('name', 'Super Admin')),
+                        false: fn ($query) => $query->whereDoesntHave('roles', fn ($q) => $q->where('name', 'Super Admin')),
+                    ),
+
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Status Akun')
                     ->trueLabel('Aktif')
