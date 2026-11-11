@@ -97,6 +97,32 @@ const showOnlyFavorites = ref(false);
 const activeSection = ref('hero');
 const isAccountDropdownOpen = ref(false);
 
+// State Modal Detail Pengumuman
+const selectedAnnouncement = ref(null);
+const isAnnouncementModalOpen = ref(false);
+
+const openAnnouncementModal = (item) => {
+    selectedAnnouncement.value = item;
+    isAnnouncementModalOpen.value = true;
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+const closeAnnouncementModal = () => {
+    isAnnouncementModalOpen.value = false;
+    selectedAnnouncement.value = null;
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+    }
+};
+
+const handleKeyDown = (e) => {
+    if (e.key === 'Escape' && isAnnouncementModalOpen.value) {
+        closeAnnouncementModal();
+    }
+};
+
 // Sliding Indicator State untuk Animasi Geser Halus (Sliding Pill)
 const navRef = ref(null);
 const heroTabRef = ref(null);
@@ -316,6 +342,7 @@ const handleLogout = () => {
 onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', updateIndicator, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
     handleScroll();
     nextTick(() => {
         updateIndicator();
@@ -333,6 +360,10 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', updateIndicator);
+    window.removeEventListener('keydown', handleKeyDown);
+    if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+    }
 });
 </script>
 
@@ -559,19 +590,45 @@ onUnmounted(() => {
                         v-for="(item, idx) in announcements"
                         :key="item.id"
                         v-reveal="idx * 130"
-                        class="reveal-card p-5 rounded-2xl bg-white border border-border hover:border-primary-ring shadow-xs hover:shadow-sm"
+                        @click="openAnnouncementModal(item)"
+                        role="button"
+                        tabindex="0"
+                        @keydown.enter="openAnnouncementModal(item)"
+                        @keydown.space.prevent="openAnnouncementModal(item)"
+                        class="reveal-card group cursor-pointer p-5 rounded-2xl bg-white border border-border hover:border-primary-ring hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-primary-ring"
                     >
-                        <div class="flex items-center gap-2 text-[11px] font-semibold text-content-subtle mb-2">
-                            <Calendar class="w-3.5 h-3.5 text-primary" />
-                            <span>{{ formatDate(item.created_at) }}</span>
+                        <div>
+                            <div class="flex items-center justify-between gap-2 text-[11px] font-semibold text-content-subtle mb-2.5">
+                                <div class="flex items-center gap-1.5">
+                                    <Calendar class="w-3.5 h-3.5 text-primary" />
+                                    <span>{{ formatDate(item.created_at) }}</span>
+                                </div>
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-primary opacity-80 group-hover:opacity-100 transition-opacity">
+                                    Lihat Detail
+                                    <ChevronRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                                </span>
+                            </div>
+
+                            <h3 class="text-sm sm:text-base font-bold text-content group-hover:text-primary transition-colors mb-2 leading-snug line-clamp-2">
+                                {{ item.title }}
+                            </h3>
+
+                            <div 
+                                class="text-xs text-content-muted leading-relaxed line-clamp-3 [&_p]:mb-1 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline"
+                                v-html="item.body"
+                            ></div>
                         </div>
-                        <h3 class="text-sm font-bold text-content mb-1.5 leading-snug">
-                            {{ item.title }}
-                        </h3>
-                        <div 
-                            class="text-xs text-content-muted leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline"
-                            v-html="item.body"
-                        ></div>
+
+                        <!-- Footer Card Info -->
+                        <div class="mt-4 pt-3 border-t border-border/60 flex items-center justify-between text-xs font-semibold text-primary">
+                            <span class="text-content-subtle group-hover:text-primary transition-colors text-[11px]">
+                                Klik kartu untuk membuka isi lengkap
+                            </span>
+                            <span class="inline-flex items-center gap-1 font-bold group-hover:translate-x-1 transition-transform">
+                                Buka
+                                <ChevronRight class="w-3.5 h-3.5" />
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -844,6 +901,81 @@ onUnmounted(() => {
                 </div>
             </div>
         </footer>
+
+        <!-- =================================================================================== -->
+        <!-- MODAL DETAIL PENGUMUMAN (Pop-up Card Informasi Lengkap)                             -->
+        <!-- =================================================================================== -->
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div 
+                    v-if="isAnnouncementModalOpen && selectedAnnouncement" 
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto"
+                    @click.self="closeAnnouncementModal"
+                >
+                    <div 
+                        class="relative w-full max-w-2xl bg-white rounded-3xl border border-border shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200"
+                        role="dialog"
+                        aria-modal="true"
+                    >
+                        <!-- Header Card Modal -->
+                        <div class="p-6 sm:p-7 border-b border-border bg-gradient-to-b from-primary-soft/50 to-white">
+                            <div class="flex items-center justify-between gap-4 mb-3">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-soft text-primary border border-primary-ring/50 text-xs font-bold">
+                                    <Bell class="w-3.5 h-3.5" />
+                                    <span>Pengumuman Perusahaan</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    @click="closeAnnouncementModal"
+                                    class="w-9 h-9 rounded-full bg-white hover:bg-neutral-100 border border-border flex items-center justify-center text-content-subtle hover:text-content transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                                    aria-label="Tutup modal"
+                                >
+                                    <X class="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            <h2 class="text-xl sm:text-2xl font-black text-content tracking-tight leading-snug">
+                                {{ selectedAnnouncement.title }}
+                            </h2>
+
+                            <div class="flex items-center gap-2 text-xs font-semibold text-content-subtle mt-3">
+                                <Calendar class="w-4 h-4 text-primary" />
+                                <span>Diterbitkan: {{ formatDate(selectedAnnouncement.created_at) }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Isi Konten Pengumuman (Scrollable jika teks panjang) -->
+                        <div class="p-6 sm:p-7 max-h-[60vh] overflow-y-auto">
+                            <div 
+                                class="text-sm sm:text-base text-content leading-relaxed space-y-3 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-bold [&_h3]:text-base [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-content-muted"
+                                v-html="selectedAnnouncement.body"
+                            ></div>
+                        </div>
+
+                        <!-- Footer Card Modal -->
+                        <div class="px-6 py-4 sm:px-7 border-t border-border bg-surface flex items-center justify-between">
+                            <span class="text-xs text-content-subtle">
+                                Tekan <kbd class="px-1.5 py-0.5 bg-white border border-border rounded text-[11px] font-mono shadow-2xs">Esc</kbd> atau klik di luar untuk menutup
+                            </span>
+                            <button
+                                type="button"
+                                @click="closeAnnouncementModal"
+                                class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                            >
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
 
     </div>
 </template>
