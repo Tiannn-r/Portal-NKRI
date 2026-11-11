@@ -370,7 +370,7 @@ onUnmounted(() => {
 <template>
     <Head title="Portal NKRI - Gerbang Sistem Digital PT Nanggala Kencana Rekatama Indonesia" />
 
-    <div class="min-h-screen bg-[#FBFBFB] text-content font-sans antialiased flex flex-col selection:bg-primary-soft selection:text-primary">
+    <div class="min-h-screen bg-[#FBFBFB] text-content font-sans antialiased flex flex-col selection:bg-primary-soft selection:text-primary no-scrollbar">
         
         <!-- =================================================================================== -->
         <!-- HEADER STICKY (Logo, Anchor Menu, Akun / Login, Padding Lega & Elegan)              -->
@@ -947,7 +947,7 @@ onUnmounted(() => {
                         </div>
 
                         <!-- Isi Konten Pengumuman (Scrollable jika teks panjang) -->
-                        <div class="p-5 sm:p-7 max-h-[65vh] sm:max-h-[60vh] overflow-y-auto">
+                        <div class="p-5 sm:p-7 max-h-[65vh] sm:max-h-[60vh] overflow-y-auto no-scrollbar">
                             <div 
                                 class="text-xs sm:text-base text-content leading-relaxed space-y-3 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-lg sm:[&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-base sm:[&_h2]:text-lg [&_h2]:font-bold [&_h3]:text-sm sm:[&_h3]:text-base [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-content-muted"
                                 v-html="selectedAnnouncement.body"

@@ -30,6 +30,37 @@ body {
 }
 
 /* ==========================================================================
+   Sembunyikan Scrollbar Namun Tetap Dapat Di-scroll Secara Mulus
+   ========================================================================== */
+html,
+body,
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE dan Edge lama */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    display: none !important;
+    width: 0px !important;
+    height: 0px !important;
+    background: transparent !important;
+}
+
+.no-scrollbar {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0px !important;
+    height: 0px !important;
+    background: transparent !important;
+}
+
+/* ==========================================================================
    Animasi Halus & Elegan (Tenang, Berwibawa & Tidak Terburu-buru)
    ========================================================================== */
 @keyframes cardEntrance {
