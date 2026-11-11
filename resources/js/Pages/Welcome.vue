@@ -376,31 +376,31 @@ onUnmounted(() => {
         <!-- HEADER STICKY (Logo, Anchor Menu, Akun / Login, Padding Lega & Elegan)              -->
         <!-- =================================================================================== -->
         <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-border shadow-xs transition-all duration-200">
-            <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-4 sm:py-5 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-3 sm:py-4 md:py-5 flex items-center justify-between gap-2">
                 
                 <!-- Logo & Brand di Sisi Kiri -->
                 <button 
                     @click="handleNavClick('hero')" 
                     type="button" 
-                    class="flex items-center space-x-3.5 text-left group focus:outline-none focus:ring-2 focus:ring-primary-ring rounded-2xl p-1.5 transition-all"
+                    class="flex items-center space-x-2 sm:space-x-3.5 text-left group focus:outline-none focus:ring-2 focus:ring-primary-ring rounded-2xl p-1 sm:p-1.5 transition-all shrink-0"
                 >
                     <img 
                         src="/images/logo-emblem.png" 
                         alt="Logo NKRI" 
-                        class="w-11 h-11 object-contain group-hover:scale-105 transition-transform duration-200" 
+                        class="w-9 h-9 sm:w-11 sm:h-11 object-contain group-hover:scale-105 transition-transform duration-200" 
                     />
                     <div class="hidden sm:block">
-                        <span class="block text-lg font-black tracking-tight text-content leading-tight group-hover:text-primary transition-colors">
+                        <span class="block text-base sm:text-lg font-black tracking-tight text-content leading-tight group-hover:text-primary transition-colors">
                             PORTAL NKRI
                         </span>
-                        <span class="block text-[11px] font-semibold text-content-subtle tracking-wider uppercase mt-0.5">
+                        <span class="block text-[10px] sm:text-[11px] font-semibold text-content-subtle tracking-wider uppercase mt-0.5">
                             PT Nanggala Kencana Rekatama Indonesia
                         </span>
                     </div>
                 </button>
 
                 <!-- Menu Anchor Navigasi di Tengah (Animasi Geser Halus Bebas Glitch) -->
-                <nav ref="navRef" class="relative flex items-center gap-1.5 sm:gap-3">
+                <nav ref="navRef" class="relative flex items-center gap-1 sm:gap-2 md:gap-3">
                     <!-- Kapsul Latar Belakang yang Meluncur Mulus (Sliding Pill Hardware Accelerated) -->
                     <div
                         class="absolute left-0 rounded-full bg-primary-soft border border-primary-ring/40 shadow-xs pointer-events-none will-change-transform"
@@ -413,7 +413,7 @@ onUnmounted(() => {
                         ref="heroTabRef"
                         type="button"
                         @click="handleNavClick('hero')"
-                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none"
+                        class="relative z-10 px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none"
                         :class="activeSection === 'hero' 
                             ? 'text-primary' 
                             : 'text-content-muted hover:text-content'"
@@ -427,7 +427,7 @@ onUnmounted(() => {
                         ref="announcementsTabRef"
                         type="button"
                         @click="handleNavClick('announcements')"
-                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none flex items-center gap-1.5 sm:gap-2"
+                        class="relative z-10 px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none flex items-center gap-1 sm:gap-2"
                         :class="activeSection === 'announcements' 
                             ? 'text-primary' 
                             : 'text-content-muted hover:text-content'"
@@ -441,7 +441,7 @@ onUnmounted(() => {
                         ref="systemsTabRef"
                         type="button"
                         @click="handleNavClick('systems')"
-                        class="relative z-10 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none"
+                        class="relative z-10 px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-150 select-none"
                         :class="activeSection === 'systems' 
                             ? 'text-primary' 
                             : 'text-content-muted hover:text-content'"
@@ -451,15 +451,15 @@ onUnmounted(() => {
                 </nav>
 
                 <!-- Menu Akun / Tombol Masuk di Kanan -->
-                <div class="relative flex items-center">
+                <div class="relative flex items-center shrink-0">
                     <!-- Jika Pengguna Sudah Login -->
                     <div v-if="auth.user" class="relative">
                         <button
                             type="button"
                             @click="isAccountDropdownOpen = !isAccountDropdownOpen"
-                            class="flex items-center gap-3 px-4 py-2 rounded-full border border-border bg-surface hover:bg-gray-100 hover:border-primary-ring transition-all text-left focus:outline-none focus:ring-2 focus:ring-primary-ring shadow-xs"
+                            class="flex items-center gap-2 sm:gap-3 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border bg-surface hover:bg-gray-100 hover:border-primary-ring transition-all text-left focus:outline-none focus:ring-2 focus:ring-primary-ring shadow-xs"
                         >
-                            <div class="w-8 h-8 rounded-full bg-primary-soft text-primary flex items-center justify-center font-bold text-xs sm:text-sm">
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary-soft text-primary flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">
                                 {{ auth.user.name.charAt(0) }}
                             </div>
                             <div class="hidden md:block max-w-[160px] truncate">
@@ -504,7 +504,7 @@ onUnmounted(() => {
                     <Link
                         v-else
                         href="/login"
-                        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-primary hover:bg-primary-hover shadow-sm hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                        class="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-1.5 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-primary hover:bg-primary-hover shadow-sm hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary-ring"
                     >
                         <LogIn class="w-3.5 h-3.5" />
                         <span>Masuk Portal</span>
@@ -519,30 +519,30 @@ onUnmounted(() => {
         <!-- =================================================================================== -->
         <section 
             id="hero" 
-            class="relative w-full min-h-[58vh] max-h-[70vh] flex items-center justify-center py-14 sm:py-18 px-4 sm:px-6 lg:px-8 border-b border-border bg-gradient-to-b from-white via-surface to-white overflow-hidden"
+            class="relative w-full min-h-[46vh] sm:min-h-[54vh] flex items-center justify-center py-10 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 border-b border-border bg-gradient-to-b from-white via-surface to-white overflow-hidden"
         >
             <!-- Ornamen Geometris Merah Halus di Latar Belakang -->
             <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
             <div class="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-primary/[0.04] blur-3xl" />
 
-            <div class="relative max-w-4xl mx-auto text-center space-y-6">
+            <div class="relative max-w-4xl mx-auto text-center space-y-4 sm:space-y-6">
                 
                 <!-- Logo Resmi NKRI di Tengah di Atas Text (Besar & Bersih Tanpa Border) -->
-                <div class="flex justify-center items-center pb-2">
+                <div class="flex justify-center items-center pb-1 sm:pb-2">
                     <img 
                         src="/images/logo-emblem.png" 
                         alt="Logo PT Nanggala Kencana Rekatama Indonesia" 
-                        class="w-28 h-28 sm:w-36 sm:h-36 object-contain drop-shadow-sm hover:scale-105 transition-transform duration-300"
+                        class="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain drop-shadow-sm hover:scale-105 transition-transform duration-300" 
                     />
                 </div>
 
                 <!-- Judul Utama Hero dari Pengaturan Portal -->
-                <h1 class="animate-text-enter text-3xl sm:text-4xl md:text-5xl font-extrabold text-content tracking-tight leading-tight">
+                <h1 class="animate-text-enter text-2xl sm:text-4xl md:text-5xl font-extrabold text-content tracking-tight leading-tight px-2">
                     {{ settings.hero_title || 'Selamat datang di Portal NKRI' }}
                 </h1>
 
                 <!-- Deskripsi Hero dari Pengaturan Portal -->
-                <p class="animate-text-enter max-w-2xl mx-auto text-sm sm:text-base text-content-muted leading-relaxed" style="animation-delay: 160ms;">
+                <p class="animate-text-enter max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-content-muted leading-relaxed px-2" style="animation-delay: 160ms;">
                     {{ settings.hero_description || 'Penyimpan seluruh sistem yang dibuat untuk PT NKRI' }}
                 </p>
 
@@ -551,10 +551,10 @@ onUnmounted(() => {
                     <button
                         type="button"
                         @click="handleNavClick('systems')"
-                        class="inline-flex items-center gap-2.5 px-7 py-3 rounded-full text-sm font-bold text-white bg-primary hover:bg-primary-hover shadow-md hover:shadow-lg transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                        class="inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold text-white bg-primary hover:bg-primary-hover shadow-md hover:shadow-lg transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-ring"
                     >
                         <span>Lihat Sistem</span>
-                        <ArrowDown class="w-4 h-4 animate-bounce" />
+                        <ArrowDown class="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" />
                     </button>
                 </div>
 
@@ -567,15 +567,15 @@ onUnmounted(() => {
         <section 
             v-if="announcements && announcements.length > 0" 
             id="announcements" 
-            class="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-border bg-[#FFFDFD]"
+            class="w-full py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b border-border bg-[#FFFDFD]"
         >
             <div class="max-w-7xl mx-auto">
-                <div class="flex items-center gap-2.5 mb-6">
-                    <div class="w-8 h-8 rounded-xl bg-primary-soft text-primary flex items-center justify-center">
+                <div class="flex items-center gap-2.5 mb-5 sm:mb-6">
+                    <div class="w-8 h-8 rounded-xl bg-primary-soft text-primary flex items-center justify-center shrink-0">
                         <Bell class="w-4 h-4" />
                     </div>
                     <div>
-                        <h2 class="text-lg font-extrabold text-content tracking-tight">
+                        <h2 class="text-base sm:text-lg font-extrabold text-content tracking-tight">
                             Pengumuman Perusahaan
                         </h2>
                         <p class="text-xs text-content-subtle">
@@ -584,8 +584,8 @@ onUnmounted(() => {
                     </div>
                 </div>
 
-                <!-- Grid Pengumuman -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Grid Pengumuman: 1 kolom di HP, 2 kolom di Tablet & Desktop -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div
                         v-for="(item, idx) in announcements"
                         :key="item.id"
@@ -595,18 +595,13 @@ onUnmounted(() => {
                         tabindex="0"
                         @keydown.enter="openAnnouncementModal(item)"
                         @keydown.space.prevent="openAnnouncementModal(item)"
-                        class="reveal-card group cursor-pointer p-5 rounded-2xl bg-white border border-border hover:border-primary-ring hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                        class="reveal-card group cursor-pointer p-4 sm:p-5 rounded-2xl bg-white border border-border hover:border-primary-ring hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-primary-ring"
                     >
                         <div>
-                            <div class="flex items-center justify-between gap-2 text-[11px] font-semibold text-content-subtle mb-2.5">
-                                <div class="flex items-center gap-1.5">
-                                    <Calendar class="w-3.5 h-3.5 text-primary" />
-                                    <span>{{ formatDate(item.created_at) }}</span>
-                                </div>
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-primary opacity-80 group-hover:opacity-100 transition-opacity">
-                                    Lihat Detail
-                                    <ChevronRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                                </span>
+                            <!-- Header Card: Tanggal Penerbitan (Bersih & Rapi) -->
+                            <div class="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-content-subtle mb-2.5">
+                                <Calendar class="w-3.5 h-3.5 text-primary shrink-0" />
+                                <span>{{ formatDate(item.created_at) }}</span>
                             </div>
 
                             <h3 class="text-sm sm:text-base font-bold text-content group-hover:text-primary transition-colors mb-2 leading-snug line-clamp-2">
@@ -619,13 +614,13 @@ onUnmounted(() => {
                             ></div>
                         </div>
 
-                        <!-- Footer Card Info -->
+                        <!-- Footer Card Info: HANYA SATU AKSI (Lihat Detail), tanpa 'Buka' terpisah -->
                         <div class="mt-4 pt-3 border-t border-border/60 flex items-center justify-between text-xs font-semibold text-primary">
-                            <span class="text-content-subtle group-hover:text-primary transition-colors text-[11px]">
-                                Klik kartu untuk membuka isi lengkap
+                            <span class="text-content-subtle text-[11px]">
+                                Pengumuman Resmi
                             </span>
                             <span class="inline-flex items-center gap-1 font-bold group-hover:translate-x-1 transition-transform">
-                                Buka
+                                Lihat Detail
                                 <ChevronRight class="w-3.5 h-3.5" />
                             </span>
                         </div>
@@ -637,16 +632,16 @@ onUnmounted(() => {
         <!-- =================================================================================== -->
         <!-- 3. DAFTAR SISTEM (Pencarian, Filter Kategori, Tombol Bintang Favorit, Kartu Sistem)  -->
         <!-- =================================================================================== -->
-        <section id="systems" class="w-full py-16 px-4 sm:px-6 lg:px-8 flex-1 bg-surface">
-            <div class="max-w-7xl mx-auto space-y-8">
+        <section id="systems" class="w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 flex-1 bg-surface">
+            <div class="max-w-7xl mx-auto space-y-6 sm:space-y-8">
                 
                 <!-- Header Section Sistem -->
                 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
-                        <span class="text-xs font-bold text-primary uppercase tracking-widest bg-primary-soft px-3 py-1 rounded-full">
+                        <span class="text-[11px] sm:text-xs font-bold text-primary uppercase tracking-widest bg-primary-soft px-3 py-1 rounded-full">
                             Katalog Terintegrasi
                         </span>
-                        <h2 class="mt-2.5 text-2xl sm:text-3xl font-extrabold text-content tracking-tight">
+                        <h2 class="mt-2.5 text-xl sm:text-2xl md:text-3xl font-extrabold text-content tracking-tight">
                             Daftar Seluruh Sistem Digital
                         </h2>
                     </div>
@@ -664,19 +659,19 @@ onUnmounted(() => {
                             v-if="searchQuery"
                             @click="searchQuery = ''"
                             type="button"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 text-content-subtle hover:text-content"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-content-subtle hover:text-content p-1"
                         >
                             <X class="w-4 h-4" />
                         </button>
                     </div>
                 </div>
 
-                <!-- Kategori & Tab Filter Favorit -->
-                <div class="flex flex-wrap items-center gap-2 pb-2 border-b border-border/80">
+                <!-- Kategori & Tab Filter Favorit (Scrollable horizontal di Mobile, Wrap di Tablet/Desktop) -->
+                <div class="flex items-center gap-2 pb-2 border-b border-border/80 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
                     <button
                         type="button"
                         @click="selectedCategory = 'all'; showOnlyFavorites = false"
-                        class="px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150"
+                        class="px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150 shrink-0"
                         :class="selectedCategory === 'all' && !showOnlyFavorites
                             ? 'bg-primary text-white shadow-xs font-bold'
                             : 'bg-white border border-border text-content-muted hover:text-content hover:bg-gray-50'"
@@ -688,7 +683,7 @@ onUnmounted(() => {
                     <button
                         type="button"
                         @click="showOnlyFavorites = !showOnlyFavorites"
-                        class="px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150 inline-flex items-center gap-1.5"
+                        class="px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150 inline-flex items-center gap-1.5 shrink-0"
                         :class="showOnlyFavorites
                             ? 'bg-amber-500 text-white shadow-xs font-bold'
                             : 'bg-white border border-border text-content-muted hover:text-amber-600 hover:bg-gray-50'"
@@ -703,7 +698,7 @@ onUnmounted(() => {
                         :key="cat.id"
                         type="button"
                         @click="selectedCategory = cat.slug; showOnlyFavorites = false"
-                        class="px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150"
+                        class="px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150 shrink-0"
                         :class="selectedCategory === cat.slug && !showOnlyFavorites
                             ? 'bg-primary text-white shadow-xs font-bold'
                             : 'bg-white border border-border text-content-muted hover:text-content hover:bg-gray-50'"
@@ -888,15 +883,15 @@ onUnmounted(() => {
         <!-- =================================================================================== -->
         <!-- 4. FOOTER (Nama PT NKRI & Hak Cipta dari Pengaturan Portal)                         -->
         <!-- =================================================================================== -->
-        <footer class="w-full bg-white border-t border-border py-8 mt-auto">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-content-subtle">
-                <div class="flex items-center space-x-2">
-                    <img src="/images/logo-emblem.png" alt="Logo NKRI" class="w-4 h-4 object-contain" />
+        <footer class="w-full bg-white border-t border-border py-6 sm:py-8 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-content-subtle text-center sm:text-left">
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                    <img src="/images/logo-emblem.png" alt="Logo NKRI" class="w-4 h-4 object-contain shrink-0" />
                     <span class="font-bold text-content">PT Nanggala Kencana Rekatama Indonesia</span>
-                    <span>&bull;</span>
-                    <span>Portal Peluncur Sistem Digital</span>
+                    <span class="hidden sm:inline">&bull;</span>
+                    <span class="block sm:inline w-full sm:w-auto text-[11px] sm:text-xs">Portal Peluncur Sistem Digital</span>
                 </div>
-                <div>
+                <div class="text-[11px] sm:text-xs">
                     {{ settings.footer_text || 'PT Nanggala Kencana Rekatama Indonesia. Seluruh hak cipta dilindungi.' }}
                 </div>
             </div>
@@ -920,54 +915,57 @@ onUnmounted(() => {
                     @click.self="closeAnnouncementModal"
                 >
                     <div 
-                        class="relative w-full max-w-2xl bg-white rounded-3xl border border-border shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200"
+                        class="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl border border-border shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200"
                         role="dialog"
                         aria-modal="true"
                     >
                         <!-- Header Card Modal -->
-                        <div class="p-6 sm:p-7 border-b border-border bg-gradient-to-b from-primary-soft/50 to-white">
-                            <div class="flex items-center justify-between gap-4 mb-3">
-                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-soft text-primary border border-primary-ring/50 text-xs font-bold">
+                        <div class="p-5 sm:p-7 border-b border-border bg-gradient-to-b from-primary-soft/50 to-white">
+                            <div class="flex items-center justify-between gap-3 mb-2.5 sm:mb-3">
+                                <div class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-primary-soft text-primary border border-primary-ring/50 text-[11px] sm:text-xs font-bold">
                                     <Bell class="w-3.5 h-3.5" />
                                     <span>Pengumuman Perusahaan</span>
                                 </div>
                                 <button
                                     type="button"
                                     @click="closeAnnouncementModal"
-                                    class="w-9 h-9 rounded-full bg-white hover:bg-neutral-100 border border-border flex items-center justify-center text-content-subtle hover:text-content transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                                    class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-neutral-100 border border-border flex items-center justify-center text-content-subtle hover:text-content transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-primary-ring"
                                     aria-label="Tutup modal"
                                 >
                                     <X class="w-4 h-4" />
                                 </button>
                             </div>
 
-                            <h2 class="text-xl sm:text-2xl font-black text-content tracking-tight leading-snug">
+                            <h2 class="text-lg sm:text-2xl font-black text-content tracking-tight leading-snug">
                                 {{ selectedAnnouncement.title }}
                             </h2>
 
-                            <div class="flex items-center gap-2 text-xs font-semibold text-content-subtle mt-3">
-                                <Calendar class="w-4 h-4 text-primary" />
+                            <div class="flex items-center gap-1.5 text-xs font-semibold text-content-subtle mt-2 sm:mt-3">
+                                <Calendar class="w-3.5 h-3.5 text-primary" />
                                 <span>Diterbitkan: {{ formatDate(selectedAnnouncement.created_at) }}</span>
                             </div>
                         </div>
 
                         <!-- Isi Konten Pengumuman (Scrollable jika teks panjang) -->
-                        <div class="p-6 sm:p-7 max-h-[60vh] overflow-y-auto">
+                        <div class="p-5 sm:p-7 max-h-[65vh] sm:max-h-[60vh] overflow-y-auto">
                             <div 
-                                class="text-sm sm:text-base text-content leading-relaxed space-y-3 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-lg [&_h2]:font-bold [&_h3]:text-base [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-content-muted"
+                                class="text-xs sm:text-base text-content leading-relaxed space-y-3 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_h1]:text-lg sm:[&_h1]:text-xl [&_h1]:font-bold [&_h2]:text-base sm:[&_h2]:text-lg [&_h2]:font-bold [&_h3]:text-sm sm:[&_h3]:text-base [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_strong]:text-content [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-content-muted"
                                 v-html="selectedAnnouncement.body"
                             ></div>
                         </div>
 
                         <!-- Footer Card Modal -->
-                        <div class="px-6 py-4 sm:px-7 border-t border-border bg-surface flex items-center justify-between">
-                            <span class="text-xs text-content-subtle">
+                        <div class="px-5 py-3.5 sm:px-7 sm:py-4 border-t border-border bg-surface flex items-center justify-between gap-3">
+                            <span class="hidden sm:inline text-xs text-content-subtle">
                                 Tekan <kbd class="px-1.5 py-0.5 bg-white border border-border rounded text-[11px] font-mono shadow-2xs">Esc</kbd> atau klik di luar untuk menutup
+                            </span>
+                            <span class="sm:hidden text-[11px] text-content-subtle">
+                                Ketuk di luar untuk menutup
                             </span>
                             <button
                                 type="button"
                                 @click="closeAnnouncementModal"
-                                class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-primary-ring"
+                                class="px-5 py-2 sm:py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-primary-ring shrink-0"
                             >
                                 Tutup
                             </button>
