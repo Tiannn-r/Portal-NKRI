@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => asset('images/logo-full.png'))
             ->brandLogoHeight('2.4rem')
             ->favicon(asset('favicon-32x32.png'))
-            ->font('Plus Jakarta Sans')
+            ->spa()
             ->colors([
                 'primary' => Color::hex('#B91C1C'),
             ])
