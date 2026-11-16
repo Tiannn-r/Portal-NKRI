@@ -1,6 +1,8 @@
 ---
 deployment:
   tasks:
-    - export PUBLIC_PATH=/home/wwwnangg/public_html/portal/
-    - /bin/cp -rf public/build $PUBLIC_PATH
-    - /bin/cp -rf public/images $PUBLIC_PATH
+    - export DEPLOYPATH=/home/wwwnangg/portal_nkri/
+    - export PUBLICPATH=/home/wwwnangg/public_html/portal/
+    - /bin/cp -rf app config database resources routes $DEPLOYPATH
+    - /bin/cp -rf public/build $PUBLICPATH
+    - /bin/cp -rf public/images $PUBLICPATH
