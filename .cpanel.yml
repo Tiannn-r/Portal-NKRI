@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export PUBLIC_PATH=/home/wwwnangg/public_html/portal/
+    - /bin/cp -rf public/build $PUBLIC_PATH
+    - /bin/cp -rf public/images $PUBLIC_PATH
