@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+// Route Optimasi Kecepatan Produksi (Akses 1x di Browser)
+Route::get('/speed-up', function () {
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    \Illuminate\Support\Facades\Artisan::call('route:cache');
+    \Illuminate\Support\Facades\Artisan::call('view:cache');
+    \Illuminate\Support\Facades\Artisan::call('filament:cache-components');
+    \Illuminate\Support\Facades\Artisan::call('icons:cache');
+    return response('<h1>✅ Kecepatan Server Sukses Dioptimalkan!</h1><p>Cache konfigurasi, rute, template blade, dan komponen Filament telah dikunci di RAM server. Silakan kembali ke <a href="/login">Halaman Login</a>.</p>');
+});
+
 // Autentikasi Tamu (Guest) - Satu-satunya Gerbang Masuk Sebelum Login
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');

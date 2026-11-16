@@ -95,7 +95,7 @@ const demoAccounts = [
                 <!-- TEKS UTAMA -->
                 <div class="relative z-10 mt-10 lg:mt-0 space-y-4">
                     <!-- Label keamanan di atas judul -->
-                    <div class="flex flex-wrap gap-2">
+                    <!-- <div class="flex flex-wrap gap-2">
                         <span class="inline-block text-[10px] font-semibold uppercase tracking-[0.16em]
                                      text-white/80 border border-white/20 bg-white/10 rounded-full px-3 py-0.5">
                             Sistem Intranet Terpadu
@@ -104,18 +104,18 @@ const demoAccounts = [
                                      text-amber-200 border border-amber-300/30 bg-amber-400/10 rounded-full px-2.5 py-0.5">
                             Akses Terbatas & Rahasia
                         </span>
-                    </div>
+                    </div> -->
 
                     <h1 class="text-3xl lg:text-[2.1rem] font-extrabold text-white leading-[1.18] tracking-tight">
                         Portal Layanan<br/>Seluruh Divisi.
                     </h1>
 
                     <p class="text-[13px] text-white/75 leading-relaxed max-w-[28ch]">
-                        Gerbang peluncur resmi instrumen kerja internal PT Nanggala Kencana Rekatama Indonesia.
+                        Gerbang penyimpan sistem resmi <br> PT Nanggala Kencana Rekatama Indonesia.
                     </p>
 
                     <!-- Tiga poin keunggulan & keamanan -->
-                    <ul class="space-y-2.5 pt-1">
+                    <!-- <ul class="space-y-2.5 pt-1">
                         <li v-for="(item, i) in [
                             'Otorisasi ketat berbasis divisi & wewenang jabatan',
                             'Perlindungan integritas operasional manufaktur rahasia',
@@ -124,7 +124,7 @@ const demoAccounts = [
                             <span class="w-1.5 h-1.5 rounded-full bg-amber-300 shrink-0" />
                             <span class="text-[12px] text-white/80">{{ item }}</span>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
 
                 <!-- COPYRIGHT BAWAH -->
@@ -149,10 +149,7 @@ const demoAccounts = [
 
                 <!-- Judul form -->
                 <div class="mb-7">
-                    <h2 class="text-[1.6rem] font-bold text-content tracking-tight">Masuk</h2>
-                    <p class="mt-1.5 text-[13px] text-content-muted leading-snug">
-                        Gunakan akun korporat yang diberikan tim IT.
-                    </p>
+                    <h2 class="text-[2.3rem] font-bold text-content tracking-tight">Masuk</h2>
                 </div>
 
                 <!-- Notifikasi status (misal: setelah logout) -->
@@ -190,7 +187,7 @@ const demoAccounts = [
                                 type="email"
                                 autocomplete="username"
                                 required
-                                placeholder="nama@nkri.co.id"
+                                placeholder="nama@gmail.com"
                                 :class="[
                                     'w-full pl-10 pr-4 py-3 text-[13.5px] text-content',
                                     'bg-[#F9FAFB] border rounded-2xl outline-none transition-all duration-200',
@@ -229,7 +226,7 @@ const demoAccounts = [
                                 :type="showPassword ? 'text' : 'password'"
                                 autocomplete="current-password"
                                 required
-                                placeholder="••••••••••••"
+                                placeholder=""
                                 :class="[
                                     'w-full pl-10 pr-11 py-3 text-[13.5px] text-content',
                                     'bg-[#F9FAFB] border rounded-2xl outline-none transition-all duration-200',
@@ -295,58 +292,18 @@ const demoAccounts = [
                     </button>
                 </form>
 
-                <!-- ─── DIVIDER ─── -->
-                <div class="relative my-6">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-border/70" />
-                    </div>
-                    <div class="relative flex justify-center">
-                        <span class="px-3 bg-white text-[11px] text-content-subtle">
-                            akun demo pengujian
-                        </span>
-                    </div>
-                </div>
-
-                <!-- ─── DEMO ACCOUNTS ─── -->
-                <div class="grid grid-cols-2 gap-2">
-                    <button
-                        v-for="acc in demoAccounts"
-                        :key="acc.email"
-                        type="button"
-                        @click="fillDemoAccount(acc.email, acc.password)"
-                        class="group flex items-start gap-2.5 p-3 rounded-2xl
-                               border border-border bg-[#F9FAFB]
-                               hover:border-primary-ring hover:bg-primary-soft
-                               transition-all duration-150 text-left"
-                    >
-                        <!-- Avatar inisial role -->
-                        <span class="shrink-0 w-7 h-7 rounded-xl bg-white border border-border
-                                     flex items-center justify-center text-[10px] font-bold text-primary
-                                     group-hover:border-primary-ring transition-colors">
-                            {{ acc.role }}
-                        </span>
-                        <div class="min-w-0">
-                            <div class="text-[12px] font-semibold text-content truncate">
-                                {{ acc.label }}
-                            </div>
-                            <div class="text-[10.5px] text-content-subtle truncate">
-                                {{ acc.email }}
-                            </div>
-                        </div>
-                    </button>
-                </div>
 
                 <!-- Footer helpdesk -->
                 <p class="mt-6 text-center text-[11.5px] text-content-subtle">
                     Lupa sandi atau kendala akses?
-                    <span class="font-semibold text-content-muted">Hubungi Helpdesk IT · ext. 101</span>
+                    <span class="font-semibold text-content-muted">Hubungi Helpdesk IT</span>
                 </p>
             </div>
         </div>
 
         <!-- Tagline di bawah kartu -->
         <p class="mt-6 text-[11px] text-gray-400">
-            Portal Sistem Digital NKRI &mdash; Hak Cipta {{ new Date().getFullYear() }}
+            Portal Sistem Digital NKRI
         </p>
     </div>
 </template>

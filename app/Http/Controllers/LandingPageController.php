@@ -22,7 +22,7 @@ class LandingPageController extends Controller
      */
     public function index(Request $request): Response
     {
-        $user = $request->user();
+        $user = $request->user()?->loadMissing(['roles', 'department', 'favoriteApplications']);
 
         // 1. Ambil Pengaturan Portal (Hero & Footer)
         $settings = [
@@ -49,7 +49,7 @@ class LandingPageController extends Controller
             ->get();
 
         $favoriteIds = $user
-            ? $user->favoriteApplications()->pluck('applications.id')->toArray()
+            ? $user->favoriteApplications->pluck('id')->all()
             : [];
 
         // 4. Filter Otorisasi: HANYA sistem yang diberi hak akses yang dikirim & ditampilkan ke pengguna

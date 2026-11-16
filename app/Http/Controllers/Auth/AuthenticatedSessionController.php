@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
     public function create(): Response|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('home'));
         }
 
         return Inertia::render('Auth/Login', [
@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('home'));
     }
 
     /**
