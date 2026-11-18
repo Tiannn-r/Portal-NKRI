@@ -19,8 +19,40 @@ Route::get('/speed-up', function () {
     \Illuminate\Support\Facades\Artisan::call('view:cache');
     \Illuminate\Support\Facades\Artisan::call('filament:cache-components');
     \Illuminate\Support\Facades\Artisan::call('icons:cache');
+
+    // Coba buat symlink otomatis ke webroot portal jika memungkinkan di cPanel
+    $target = storage_path('app/public');
+    $link = base_path('../public_html/portal/storage');
+    if (!file_exists($link) && file_exists(dirname($link))) {
+        @symlink($target, $link);
+    }
+
     return response('<h1>✅ Kecepatan Server Sukses Dioptimalkan!</h1><p>Cache konfigurasi, rute, template blade, dan komponen Filament telah dikunci di RAM server. Silakan kembali ke <a href="/login">Halaman Login</a>.</p>');
 });
+
+// Route Pelayan File Upload Storage (Otomatis & Kompatibel cPanel Shared Hosting Tanpa Symlink)
+Route::get('/storage/{path}', function (string $path) {
+    $filePath = storage_path('app/public/' . $path);
+    if (!file_exists($filePath)) {
+        abort(404);
+    }
+
+    $mimeType = match (strtolower(pathinfo($filePath, PATHINFO_EXTENSION))) {
+        'png' => 'image/png',
+        'jpg', 'jpeg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'svg' => 'image/svg+xml',
+        'webp' => 'image/webp',
+        'ico' => 'image/x-icon',
+        'pdf' => 'application/pdf',
+        default => @mime_content_type($filePath) ?: 'application/octet-stream',
+    };
+
+    return response()->file($filePath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=604800, immutable',
+    ]);
+})->where('path', '.*')->name('storage.local');
 
 // Autentikasi Tamu (Guest) - Satu-satunya Gerbang Masuk Sebelum Login
 Route::middleware('guest')->group(function () {

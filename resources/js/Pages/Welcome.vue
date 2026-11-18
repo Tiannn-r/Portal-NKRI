@@ -101,6 +101,18 @@ const isAccountDropdownOpen = ref(false);
 const selectedAnnouncement = ref(null);
 const isAnnouncementModalOpen = ref(false);
 
+// State penanganan gambar / logo rusak agar anggun fallback ke icon
+const failedLogos = ref({});
+const failedImages = ref({});
+
+const handleLogoError = (id) => {
+    failedLogos.value[id] = true;
+};
+
+const handleImageError = (id) => {
+    failedImages.value[id] = true;
+};
+
 const openAnnouncementModal = (item) => {
     selectedAnnouncement.value = item;
     isAnnouncementModalOpen.value = true;
@@ -722,15 +734,16 @@ onUnmounted(() => {
                                     <!-- Logo Sistem (Gambar Upload atau Ikon Lucide) -->
                                     <div 
                                         class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border transition-transform duration-200 group-hover:scale-105"
-                                        :class="system.logo 
+                                        :class="system.logo && !failedLogos[system.id]
                                             ? 'bg-white border-border shadow-2xs p-1' 
                                             : 'bg-primary-soft border-primary-ring/40 text-primary'"
                                     >
                                         <img 
-                                            v-if="system.logo" 
+                                            v-if="system.logo && !failedLogos[system.id]" 
                                             :src="system.logo" 
                                             :alt="system.name" 
-                                            class="w-full h-full object-contain rounded-lg" 
+                                            class="w-full h-full object-contain rounded-lg"
+                                            @error="handleLogoError(system.id)" 
                                         />
                                         <component v-else :is="getSystemIcon(system.icon)" class="w-5 h-5" />
                                     </div>
@@ -766,13 +779,14 @@ onUnmounted(() => {
                             <div class="mb-3.5">
                                 <div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-slate-100 border border-slate-200/80 group-hover:border-primary-ring/60 transition-all duration-300">
                                     <img 
-                                        v-if="system.image" 
+                                        v-if="system.image && !failedImages[system.id]" 
                                         :src="system.image" 
                                         :alt="'Pratinjau ' + system.name" 
                                         class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                                         loading="lazy"
+                                        @error="handleImageError(system.id)"
                                     />
-                                    <!-- Fallback Mockup Browser jika belum ada gambar -->
+                                    <!-- Fallback Mockup Browser jika belum ada gambar atau gagal muat -->
                                     <div v-else class="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col justify-between p-3">
                                         <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
                                             <div class="flex items-center space-x-1.5">

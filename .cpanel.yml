@@ -6,3 +6,4 @@ deployment:
     - /bin/cp -rf app config database resources routes $DEPLOYPATH
     - /bin/cp -rf public/build $PUBLICPATH
     - /bin/cp -rf public/images $PUBLICPATH
+    - /bin/ln -sfn /home/wwwnangg/portal_nkri/storage/app/public /home/wwwnangg/public_html/portal/storage || true

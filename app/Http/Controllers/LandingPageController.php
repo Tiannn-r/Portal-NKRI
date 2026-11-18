@@ -58,13 +58,31 @@ class LandingPageController extends Controller
         })->values();
 
         $systems = $accessibleApps->map(function (Application $app) use ($favoriteIds) {
-            $logoUrl = $app->logo 
-                ? (str_starts_with($app->logo, 'http') ? $app->logo : asset('storage/' . $app->logo)) 
-                : null;
+            $logoUrl = null;
+            if ($app->logo) {
+                if (str_starts_with($app->logo, 'http://') || str_starts_with($app->logo, 'https://')) {
+                    $logoUrl = $app->logo;
+                } elseif (str_starts_with($app->logo, 'images/')) {
+                    $logoUrl = asset($app->logo);
+                } elseif (str_starts_with($app->logo, 'storage/')) {
+                    $logoUrl = asset($app->logo);
+                } else {
+                    $logoUrl = asset('storage/' . ltrim($app->logo, '/'));
+                }
+            }
 
-            $imageUrl = $app->image 
-                ? (str_starts_with($app->image, 'http') ? $app->image : (str_starts_with($app->image, 'images/') ? asset($app->image) : asset('storage/' . $app->image))) 
-                : null;
+            $imageUrl = null;
+            if ($app->image) {
+                if (str_starts_with($app->image, 'http://') || str_starts_with($app->image, 'https://')) {
+                    $imageUrl = $app->image;
+                } elseif (str_starts_with($app->image, 'images/')) {
+                    $imageUrl = asset($app->image);
+                } elseif (str_starts_with($app->image, 'storage/')) {
+                    $imageUrl = asset($app->image);
+                } else {
+                    $imageUrl = asset('storage/' . ltrim($app->image, '/'));
+                }
+            }
 
             return [
                 'id' => $app->id,
